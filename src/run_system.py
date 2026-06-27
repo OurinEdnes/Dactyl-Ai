@@ -16,7 +16,7 @@ import threading
 # Load Otak AI
 model_path = 'models/svm_gesture_model.pkl'
 if not os.path.exists(model_path):
-    print("❌ Model tidak ditemukan! Latih dulu di train_model.py ya!")
+    print("[ERROR] Model tidak ditemukan! Latih dulu di train_model.py ya!")
     exit()
 
 # Membuka file model & scaler
@@ -42,6 +42,7 @@ pyautogui.PAUSE = 0.01
 is_paused = False
 keyboard_active = False
 is_dragging = False
+pinch_start_time = None
 
 # Cooldown & Timer State
 last_click_time = 0.0
@@ -117,7 +118,7 @@ cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-print("🦈 Sistem Kursor Magic Bimanual Aktif! Tekan 'q' untuk keluar.")
+print("[SYSTEM] Sistem Kursor Magic Bimanual Aktif! Tekan 'q' untuk keluar.")
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -168,14 +169,14 @@ while cap.isOpened():
         prediction = model.predict(X_scaled)
         gesture = int(prediction[0])
 
-    # ----------------- LOGIKA 4: REM DARURAT (PAUSE) -----------------
-    if left_hand_active and right_hand_active and gesture == 7:
+    # ----------------- LOGIKA 4: LOCK / UNLOCK (PAUSE) -----------------
+    if (left_hand_active or right_hand_active) and gesture == 7:
         if pause_toggle_start is None:
             pause_toggle_start = time.time()
-        elif time.time() - pause_toggle_start > 1.5:
+        elif time.time() - pause_toggle_start > 1.0:
             is_paused = not is_paused
             pause_toggle_start = None
-            time.sleep(0.3)  # Jeda sejenak untuk menghindari toggle ganda
+            time.sleep(0.5)  # Jeda sejenak untuk menghindari toggle ganda
     else:
         pause_toggle_start = None
 
@@ -186,16 +187,17 @@ while cap.isOpened():
         cv2.rectangle(overlay, (0, 0), (w_cam, h_cam), (0, 0, 150), -1)
         cv2.addWeighted(overlay, 0.4, frame, 0.6, 0, frame)
         
-        cv2.putText(frame, "✊ AI PAUSED / STANDBY ✊", (w_cam // 2 - 250, h_cam // 2 - 20),
-                    cv2.FONT_HERSHEY_DUPLEX, 1.2, (0, 0, 255), 3)
-        cv2.putText(frame, "Genggam kedua tangan selama 1.5 detik untuk aktifkan kembali", 
-                    (w_cam // 2 - 370, h_cam // 2 + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+        cv2.putText(frame, "✊ SYSTEM LOCKED / STANDBY ✊", (w_cam // 2 - 270, h_cam // 2 - 20),
+                    cv2.FONT_HERSHEY_DUPLEX, 1.2, (0, 255, 0), 3)
+        cv2.putText(frame, "Genggam tangan (fist ✊) selama 1.0 detik untuk UNLOCK", 
+                    (w_cam // 2 - 310, h_cam // 2 + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
         
         # Reset state lainnya
         if is_dragging:
             pyautogui.mouseUp()
             is_dragging = False
         prev_right_angle = prev_left_angle = prev_scroll_x = prev_scroll_y = None
+        pinch_start_time = None
         
         cv2.imshow('Magic Cursor - Aikoo', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
@@ -217,9 +219,9 @@ while cap.isOpened():
         # Tulis petunjuk di bagian atas
         cv2.rectangle(frame, (0, 0), (w_cam, 70), (30, 20, 20), -1)
         cv2.putText(frame, "⌨️ KEYBOARD HANTU AKTIF (Aksi Mouse Beku)", (20, 45), 
-                    cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 200, 255), 2)
+                    cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
         cv2.putText(frame, "Tahan Peace ganda 2 detik untuk keluar", (w_cam - 380, 45), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (200, 200, 200), 1)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 1)
 
         # Gambar Keyboard Virtual (Semi-transparan)
         overlay = frame.copy()
@@ -227,7 +229,7 @@ while cap.isOpened():
             cv2.rectangle(overlay, (k['x1'], k['y1']), (k['x2'], k['y2']), (80, 50, 50), -1)
             cv2.rectangle(overlay, (k['x1'], k['y1']), (k['x2'], k['y2']), (150, 150, 150), 1)
             cv2.putText(overlay, k['key'], (k['x1'] + 15, k['y1'] + 45), 
-                        cv2.FONT_HERSHEY_DUPLEX, 0.6, (255, 255, 255), 1)
+                        cv2.FONT_HERSHEY_DUPLEX, 0.6, (0, 255, 0), 1)
         cv2.addWeighted(overlay, 0.5, frame, 0.5, 0, frame)
 
         # Deteksi jari hover di tombol keyboard
@@ -253,7 +255,7 @@ while cap.isOpened():
                     # Highlight tombol yang sedang di-hover
                     cv2.rectangle(frame, (k['x1'], k['y1']), (k['x2'], k['y2']), (255, 150, 0), -1)
                     cv2.putText(frame, k['key'], (k['x1'] + 15, k['y1'] + 45), 
-                                cv2.FONT_HERSHEY_DUPLEX, 0.6, (255, 255, 255), 2)
+                                cv2.FONT_HERSHEY_DUPLEX, 0.6, (0, 0, 0), 2)
                     
                     if k['key'] not in hover_start:
                         hover_start[k['key']] = time.time()
@@ -349,7 +351,7 @@ while cap.isOpened():
                         os.makedirs('Data/screenshots', exist_ok=True)
                         filepath = f"Data/screenshots/screenshot_{int(time.time())}.png"
                         pyautogui.screenshot(filepath, region=(x1_scr, y1_scr, w_region, h_region))
-                        print(f"📸 Screenshot Berhasil Disimpan: {filepath}")
+                        print(f"[SCREENSHOT] Screenshot Berhasil Disimpan: {filepath}")
                         flash_frames = 4  # Animasi shutter flash kamera
                     
                     screenshot_start = None
@@ -412,10 +414,12 @@ while cap.isOpened():
             cursor_y = alpha * raw_y + (1 - alpha) * cursor_y
             
             scr_w, scr_h = pyautogui.size()
-            pyautogui.moveTo(int(cursor_x * scr_w), int(cursor_y * scr_h))
+            x_target = max(5, min(scr_w - 5, int(cursor_x * scr_w)))
+            y_target = max(5, min(scr_h - 5, int(cursor_y * scr_h)))
+            pyautogui.moveTo(x_target, y_target)
             cv2.putText(frame, "🖱️ Move Mode", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
 
-        # Label 1: Aksi klik (Cubit Kiri/Kanan)
+        # Label 1: Aksi klik & Hold-Drag (Cubit Kiri/Kanan)
         elif gesture == 1 and right_hand_active:
             t_tip = hand_landmarks_right.landmark[4]
             i_tip = hand_landmarks_right.landmark[8]
@@ -425,44 +429,59 @@ while cap.isOpened():
             dist_right = calculate_distance(t_tip, m_tip)
             now = time.time()
             
-            if dist_left < 0.045 and (now - last_click_time > 0.4):
-                pyautogui.click(button='left')
-                last_click_time = now
-                cv2.putText(frame, "🔥 LEFT CLICK!", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 255), 3)
-            elif dist_right < 0.045 and (now - last_click_time > 0.4):
-                pyautogui.click(button='right')
-                last_click_time = now
-                cv2.putText(frame, "🔥 RIGHT CLICK!", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 0, 255), 3)
-
-        # Label 7: Hold & Drag (Cubit ditahan, Tangan Kanan saja)
-        elif gesture == 7 and right_hand_active and not left_hand_active:
-            t_tip = hand_landmarks_right.landmark[4]
-            i_tip = hand_landmarks_right.landmark[8]
-            dist = calculate_distance(t_tip, i_tip)
+            # Deteksi Cubit Kiri (Jempol + Telunjuk Kanan) untuk Klik Kiri / Drag
+            if dist_left < 0.045:
+                if pinch_start_time is None:
+                    pinch_start_time = now
+                elif now - pinch_start_time > 0.3:
+                    # Jika cubitan ditahan lebih dari 0.3 detik -> DRAG
+                    if not is_dragging:
+                        pyautogui.mouseDown()
+                        is_dragging = True
+                    
+                    # Pindahkan kursor saat drag
+                    raw_x = i_tip.x
+                    raw_y = i_tip.y
+                    cursor_x = alpha * raw_x + (1 - alpha) * cursor_x
+                    cursor_y = alpha * raw_y + (1 - alpha) * cursor_y
+                    scr_w, scr_h = pyautogui.size()
+                    x_target = max(5, min(scr_w - 5, int(cursor_x * scr_w)))
+                    y_target = max(5, min(scr_h - 5, int(cursor_y * scr_h)))
+                    pyautogui.moveTo(x_target, y_target)
+                    cv2.putText(frame, "✊ DRAG MODE (HOLD)", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
             
-            if dist < 0.045:
-                if not is_dragging:
-                    pyautogui.mouseDown()
-                    is_dragging = True
-                
-                # Pindahkan kursor saat drag
-                raw_x = i_tip.x
-                raw_y = i_tip.y
-                cursor_x = alpha * raw_x + (1 - alpha) * cursor_x
-                cursor_y = alpha * raw_y + (1 - alpha) * cursor_y
-                scr_w, scr_h = pyautogui.size()
-                pyautogui.moveTo(int(cursor_x * scr_w), int(cursor_y * scr_h))
-                cv2.putText(frame, "✊ DRAG MODE (HOLD)", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 0, 255), 2)
-            else:
+            # Deteksi Cubit Kanan (Jempol + Jari Tengah Kanan) untuk Klik Kanan
+            elif dist_right < 0.045:
+                # Reset drag state just in case
                 if is_dragging:
                     pyautogui.mouseUp()
                     is_dragging = False
-
-        # Matikan drag jika gesturnya tidak mendukung lagi
+                pinch_start_time = None
+                
+                if now - last_click_time > 0.4:
+                    pyautogui.click(button='right')
+                    last_click_time = now
+                    cv2.putText(frame, "🔥 RIGHT CLICK!", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0), 3)
+            
+            else:
+                # Jika cubitan dilepas
+                if is_dragging:
+                    pyautogui.mouseUp()
+                    is_dragging = False
+                elif pinch_start_time is not None:
+                    # Jika dilepas dengan cepat (< 0.3 detik) -> KLIK KIRI
+                    if now - pinch_start_time < 0.3 and (now - last_click_time > 0.4):
+                        pyautogui.click(button='left')
+                        last_click_time = now
+                        cv2.putText(frame, "🔥 LEFT CLICK!", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0), 3)
+                pinch_start_time = None
+                
+        # Jika gestur bukan Label 1, pastikan drag dilepas
         else:
             if is_dragging:
                 pyautogui.mouseUp()
                 is_dragging = False
+            pinch_start_time = None
 
         # ----------------- LOGIKA 3: SCROLL & SWIPE TAB -----------------
         # Label 5: Scroll (Ninja - Jari telunjuk & tengah lurus sejajar)
@@ -488,7 +507,7 @@ while cap.isOpened():
                 else:
                     prev_scroll_y = curr_y
                     prev_scroll_x = curr_x
-                cv2.putText(frame, "🧭 Ninja Scroll", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 255, 0), 2)
+                cv2.putText(frame, "🧭 Ninja Scroll", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
         else:
             prev_scroll_x = None
             prev_scroll_y = None
@@ -526,7 +545,7 @@ while cap.isOpened():
 
     # Visualisasi Tambahan di Pojok Layar
     cv2.putText(frame, f"AI Label: {gesture if gesture is not None else '-'}", (50, 100), 
-                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
     
     # Animasi Shutter Flash Kamera saat screenshot berhasil
     if flash_frames > 0:

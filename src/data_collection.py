@@ -3,10 +3,6 @@ import mediapipe as mp
 import csv
 import os
 
-# =======================================================
-# 🦈 SCRIPT PENGUMPUL DATA GESTUR BIMANUAL (V2) OURIN 🦈
-# =======================================================
-
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 hands = mp_hands.Hands(
@@ -29,14 +25,14 @@ if not os.path.exists(csv_path):
     with open(csv_path, mode='w', newline='') as f:
         csv.writer(f).writerow(header)
 
-print("🦈 Aikoo Bimanual System Ready!")
+print("Bimanual System Ready!")
 print("=========================================")
 print("TIPS REKAM DATA (Tahan tombol di keyboard saat pose):")
 print("[0] : Telunjuk Lurus (Move)")
 print("[1] : Cubit (Klik)")
 print("[2] : Megang Bola / C-Shape (Volume/Bright)")
-print("[3] : Peace ✌️ (Keyboard)")
-print("[4] : Frame Kamera 📸 (Screenshot)")
+print("[3] : Peace (Keyboard)")
+print("[4] : Frame Kamera (Screenshot)")
 print("[5] : Dua Jari Lurus Ninja (Scroll)")
 print("[6] : Tangan Terbuka Kertas (Swipe Kiri/Kanan)")
 print("[7] : Tangan Mengepal Kuat (Standby/Pause)")
@@ -89,9 +85,9 @@ while cap.isOpened():
                 right_hand_data = coords
 
     # Tampilkan panduan di layar
-    cv2.putText(frame, "Tahan [0-4] utk rekam, [Q] utk keluar", (10, 30), 
+    cv2.putText(frame, "Tahan [0-7] utk rekam, [Q] utk keluar", (10, 30), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
-    cv2.imshow("Kamera Pengumpul Data V2 🦈", frame)
+    cv2.imshow("Kamera Pengumpul Data V2", frame)
 
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q'): break
