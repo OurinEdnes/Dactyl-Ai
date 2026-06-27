@@ -42,5 +42,5 @@ Pastikan Python sudah terpasang di sistem Anda (versi 3.8 ke atas).
 
 ### 2. Clone Repository
 ```bash
-git clone [https://github.com/USERNAME_KALIAN/Dactyl-AI.git](https://github.com/USERNAME_KALIAN/Dactyl-AI.git)
+git clone [https://github.com/USERNAME_KALIAN/Dactyl-AI.git](https://github.com/.../Dactyl-AI.git)
 cd Dactyl-AI
