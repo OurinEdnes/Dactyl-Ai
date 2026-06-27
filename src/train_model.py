@@ -7,66 +7,62 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, classification_report
 
-# =======================================================
-# 🦈 SCRIPT PELATIHAN AI (MODEL TRAINING) OURIN 🦈
-# =======================================================
-
 csv_path = 'Data/dataset_bimanual.csv'
 model_dir = 'models'
 model_path = os.path.join(model_dir, 'svm_gesture_model.pkl')
 
-print("🦈 Memulai proses penyekolahan AI Aikoo...")
+print("Memulai proses pelatihan model AI...")
 
 if not os.path.exists(csv_path):
-    print(f"❌ Error: File {csv_path} belum ada!")
+    print(f"Error: File {csv_path} tidak ditemukan.")
     exit()
 
-print("📊 Sedang membaca Buku Pelajaran (Dataset)...")
-
-# --- AIKOO MAGIC: Otomatis nambahin header kalau filenya polos ---
-# Kita buat list nama kolom: 'label' diikuti 126 kolom koordinat
 kolom_koordinat = [f'k_{i}' for i in range(126)]
 header = ['label'] + kolom_koordinat
-
 df = pd.read_csv(csv_path, header=None, names=header)
 
-# Cek hasil load
-print(f"✅ Data berhasil dimuat! Total: {len(df)} baris.")
-
-# Memisahkan Kolom Label dengan Fitur
 X = df.drop('label', axis=1) 
 y = df['label']
 
-# Bagi data: 80% Train, 20% Test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+## Split pertama: 80% Train, 20% Temp
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+# Split kedua: 50% dari Temp untuk Val (10% total), 50% untuk Test (10% total)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp)
 
-# Preprocessing
+def print_distribution(y_data, name):
+    dist = y_data.value_counts(normalize=True).sort_index() * 100
+    counts = y_data.value_counts().sort_index()
+    print(f"\nDistribusi {name} (Total: {len(y_data)}):")
+    for label, count in counts.items():
+        print(f"  Label {label}: {count} sampel ({dist[label]:.1f}%)")
+
+print(f"Total data: {len(df)} baris")
+print_distribution(y_train, "Train Set")
+print_distribution(y_val, "Validation Set")
+print_distribution(y_test, "Test Set")
+
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
+X_val_scaled = scaler.transform(X_val)
 X_test_scaled = scaler.transform(X_test)
 
-# Latih Model
-print("🧠 Sedang melatih Model AI (Support Vector Machine)...")
 model = SVC(kernel='rbf', probability=True, C=10, gamma='scale')
 model.fit(X_train_scaled, y_train)
 
-# Testing
-print("📝 AI sedang mengerjakan Ujian (Testing)...")
-y_pred = model.predict(X_test_scaled)
+print("\n--- EVALUASI VALIDASI (Fase Tuning) ---")
+val_pred = model.predict(X_val_scaled)
+print(f"Akurasi Validasi: {accuracy_score(y_val, val_pred) * 100:.2f}%")
+print(classification_report(y_val, val_pred))
 
-akurasi = accuracy_score(y_test, y_pred)
-print("=========================================")
-print(f"🎯 AKURASI KECERDASAN AI: {akurasi * 100:.2f}%")
-print("=========================================")
+#print("\n--- EVALUASI FINAL (Fase Test) ---")
+test_pred = model.predict(X_test_scaled)
+print(f"Akurasi Final (Test): {accuracy_score(y_test, test_pred) * 100:.2f}%")
+print(classification_report(y_test, test_pred))
 
-print("\nDetail Nilai Rapor AI:")
-print(classification_report(y_test, y_pred))
-
-# Simpan
 if not os.path.exists(model_dir):
     os.makedirs(model_dir, exist_ok=True)
 
 with open(model_path, 'wb') as f:
     pickle.dump({'model': model, 'scaler': scaler}, f)
 
-print(f"💾 BERHASIL! Otak AI telah disimpan di: {model_path}")
+print(f"Berhasil: Otak AI dan Formula Scaler telah disimpan di: {model_path}")
