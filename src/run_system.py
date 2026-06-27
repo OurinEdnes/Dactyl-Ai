@@ -35,7 +35,7 @@ hands = mp_hands.Hands(
 )
 
 # Setting PyAutoGUI
-pyautogui.FAILSAFE = True  # Geser kursor ke pojok kiri atas layar buat matiin program
+pyautogui.FAILSAFE = False  # Matikan failsafe agar tidak sering crash, penutupan via tombol 'q' atau lock
 pyautogui.PAUSE = 0.01
 
 # State System
