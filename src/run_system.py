@@ -3,27 +3,7 @@ import mediapipe as mp
 import pyautogui
 import pickle
 import numpy as np
-import os
-import math
-import time
-import subprocess
-import threading
-
-# =======================================================
-# 🦈 SISTEM KURSOR MAGIC BIMANUAL (V2.5) OURIN 🦈
-# =======================================================
-
-# Load Otak AI
-model_path = 'models/svm_gesture_model.pkl'
-if not os.path.exists(model_path):
-    print("[ERROR] Model tidak ditemukan! Latih dulu di train_model.py ya!")
-    exit()
-
-# Membuka file model & scaler
-with open(model_path, 'rb') as f:
-    data = pickle.load(f)
-    model = data['model']
-    scaler = data['scaler']
+i
 
 # Setup MediaPipe Hands (Mendukung 2 tangan secara simultan)
 mp_hands = mp.solutions.hands
@@ -60,7 +40,27 @@ prev_left_angle = None
 prev_scroll_x = None
 prev_scroll_y = None
 
-# Filter Smoothing EMA untuk Kursor
+# Filter Smoothing EMA untmport os
+import math
+import time
+import subprocess
+import threading
+
+# =======================================================
+# 🦈 SISTEM KURSOR MAGIC BIMANUAL (V2.5) OURIN 🦈
+# =======================================================
+
+# Load Otak AI
+model_path = 'models/svm_gesture_model.pkl'
+if not os.path.exists(model_path):
+    print("[ERROR] Model tidak ditemukan! Latih dulu di train_model.py ya!")
+    exit()
+
+# Membuka file model & scaler
+with open(model_path, 'rb') as f:
+    data = pickle.load(f)
+    model = data['model']
+    scaler = data['scaler']uk Kursor
 cursor_x, cursor_y = 0.5, 0.5
 alpha = 0.25  # Semakin kecil semakin mulus, tapi sedikit ada delay
 
