@@ -1,0 +1,80 @@
+========================================================================
+PANDUAN INSTALASI & PENGATURAN ENVIRONMENT - DACTYL-AI
+========================================================================
+
+Dokumen ini berisi langkah-langkah untuk menyiapkan environment dan 
+menginstal library Python yang diperlukan untuk menjalankan sistem Dactyl-AI.
+
+------------------------------------------------------------------------
+1. PRASYARAT (PREREQUISITES)
+------------------------------------------------------------------------
+- Python versi 3.8 atau yang lebih baru (Disarankan versi 3.10 atau 3.11).
+- Koneksi Internet aktif untuk mengunduh package.
+
+------------------------------------------------------------------------
+2. MEMASTIKAN & MENGINSTAL PIP (PACKAGE MANAGER PYTHON)
+------------------------------------------------------------------------
+Secara default, instalasi Python modern sudah menyertakan `pip`.
+Untuk memeriksa apakah `pip` sudah terpasang, buka Command Prompt (cmd)
+atau PowerShell, lalu jalankan perintah:
+
+  python -m pip --version
+
+Jika `pip` belum terinstal (misal pada Linux/Ubuntu tertentu), gunakan perintah:
+
+  # Di Debian/Ubuntu:
+  sudo apt update
+  sudo apt install python3-pip
+
+Untuk memastikan `pip` berada pada versi terbaru, jalankan perintah upgrade:
+
+  python -m pip install --upgrade pip
+
+------------------------------------------------------------------------
+3. SETUP VIRTUAL ENVIRONMENT (SANGAT DIREKOMENDASIKAN)
+------------------------------------------------------------------------
+Untuk menghindari konflik antar package, buatlah virtual environment 
+di dalam folder project Anda sebelum menginstal library:
+
+  # Membuat virtual environment bernama 'venv'
+  python -m venv venv
+
+  # Mengaktifkan virtual environment:
+  # Di Windows (Command Prompt / cmd):
+  venv\Scripts\activate
+  
+  # Di Windows (PowerShell):
+  .\venv\Scripts\Activate.ps1
+  
+  # Di macOS / Linux:
+  source venv/bin/activate
+
+Setelah aktif, prompt di terminal Anda akan berubah dengan awalan (venv).
+
+------------------------------------------------------------------------
+4. INSTALASI LIBRARY / DEPENDENCIES
+------------------------------------------------------------------------
+Setelah virtual environment aktif, instal semua library yang dibutuhkan.
+
+Opsi A: Menggunakan File requirements.txt (Lebih Cepat & Praktis)
+------------------------------------------------------------------
+Jalankan perintah berikut dari folder root project (tempat file ini berada):
+
+  pip install -r requirements.txt
+
+Opsi B: Menginstal Satu per Satu secara Manual
+--------------------------------------------------
+Jika Anda ingin menginstal library secara manual, jalankan perintah berikut:
+
+  pip install opencv-python mediapipe pyautogui numpy pandas scikit-learn
+
+------------------------------------------------------------------------
+5. CARA MENJALANKAN APLIKASI
+------------------------------------------------------------------------
+Setelah proses instalasi selesai, Anda dapat menjalankan modul utama:
+
+  python src/run_system.py
+
+Catatan Khusus:
+- Sistem menggunakan kamera (webcam) untuk mendeteksi hand landmark. Pastikan webcam terhubung dan izin akses kamera diaktifkan.
+- PyAutoGUI memerlukan izin akses sistem/aksesbilitas tertentu di OS macOS jika Anda menjalankannya di Mac.
