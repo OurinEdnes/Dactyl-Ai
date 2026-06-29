@@ -3,7 +3,10 @@ import mediapipe as mp
 import pyautogui
 import pickle
 import numpy as np
-i
+import os
+import ctypes
+from ctypes import wintypes
+
 
 # Setup MediaPipe Hands (Mendukung 2 tangan secara simultan)
 mp_hands = mp.solutions.hands
@@ -13,14 +16,7 @@ hands = mp_hands.Hands(
     min_detection_confidence=0.7,
     min_tracking_confidence=0.5
 )
-
-# Setting PyAutoGUI
-pyautogui.FAILSAFE = False  # Matikan failsafe agar tidak sering crash, penutupan via tombol 'q' atau lock
-pyautogui.PAUSE = 0.01
-
-# State System
-is_paused = False
-keyboard_active = False
+teretyuiod_active = False
 is_dragging = False
 pinch_start_time = None
 
@@ -40,7 +36,6 @@ prev_left_angle = None
 prev_scroll_x = None
 prev_scroll_y = None
 
-# Filter Smoothing EMA untmport os
 import math
 import time
 import subprocess
@@ -60,7 +55,9 @@ if not os.path.exists(model_path):
 with open(model_path, 'rb') as f:
     data = pickle.load(f)
     model = data['model']
-    scaler = data['scaler']uk Kursor
+    scaler = data['scaler']
+
+# Filter Smoothing EMA untuk Kursor
 cursor_x, cursor_y = 0.5, 0.5
 alpha = 0.25  # Semakin kecil semakin mulus, tapi sedikit ada delay
 
@@ -118,7 +115,89 @@ cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-print("[SYSTEM] Sistem Kursor Magic Bimanual Aktif! Tekan 'q' untuk keluar.")
+window_name = 'Magic Cursor - Aikoo'
+cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+window_setup_done = False
+cached_hwnd = None
+
+def init_win32_argtypes():
+    ctypes.windll.user32.SetWindowPos.argtypes = [wintypes.HWND, wintypes.HWND, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_uint]
+    ctypes.windll.user32.SetWindowLongW.argtypes = [wintypes.HWND, ctypes.c_int, ctypes.c_long]
+    ctypes.windll.user32.SetLayeredWindowAttributes.argtypes = [wintypes.HWND, wintypes.COLORREF, wintypes.BYTE, wintypes.DWORD]
+
+def setup_gui_window(win_name, width, height):
+    global cached_hwnd
+    try:
+        init_win32_argtypes()
+        hwnd = ctypes.windll.user32.FindWindowW(None, win_name)
+        if not hwnd:
+            return None
+        cached_hwnd = hwnd
+            
+        # 1. Atur Transparansi (60% Opacity)
+        GWL_EXSTYLE = -20
+        WS_EX_LAYERED = 0x00080000
+        LWA_ALPHA = 0x00000002
+        
+        ex_style = ctypes.windll.user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
+        ctypes.windll.user32.SetWindowLongW(hwnd, GWL_EXSTYLE, ex_style | WS_EX_LAYERED)
+        
+        # 60% transparansi / opacity (sesuaikan nilai 0.60 ini sesuai keinginan)
+        alpha_val = int(255 * 0.60)
+        ctypes.windll.user32.SetLayeredWindowAttributes(hwnd, 0, alpha_val, LWA_ALPHA)
+        
+        # 2. Hitung Posisi Pojok Kanan Bawah Di Atas Taskbar
+        rect = wintypes.RECT()
+        SPI_GETWORKAREA = 0x0030
+        ctypes.windll.user32.SystemParametersInfoW(SPI_GETWORKAREA, 0, ctypes.byref(rect), 0)
+        
+        margin_x = 15
+        margin_y = 15
+        pos_x = rect.right - width - margin_x
+        pos_y = rect.bottom - height - margin_y
+        
+        # 3. Jadikan Always on Top (Topmost) & Pindahkan Posisi
+        HWND_TOPMOST = wintypes.HWND(-1)
+        SWP_SHOWWINDOW = 0x0040
+        ctypes.windll.user32.SetWindowPos(hwnd, HWND_TOPMOST, pos_x, pos_y, width, height, SWP_SHOWWINDOW)
+        return hwnd
+    except Exception as e:
+        print(f"[WARNING] Gagal atur GUI Windows: {e}")
+        return None
+
+def display_and_check_exit(frame_to_show):
+    global window_setup_done, cached_hwnd
+    gui_frame = cv2.resize(frame_to_show, (360, 202))
+    cv2.imshow(window_name, gui_frame)
+    key = cv2.waitKey(1) & 0xFF
+    
+    if not window_setup_done:
+        cached_hwnd = setup_gui_window(window_name, 360, 202)
+        if cached_hwnd:
+            window_setup_done = True
+    else:
+        # Paksakan status Always on Top (Topmost) secara konstan pada setiap frame
+        # agar tidak tertimpa aplikasi apa pun saat mengklik atau mengedit file lain.
+        try:
+            if cached_hwnd:
+                HWND_TOPMOST = wintypes.HWND(-1)
+                SWP_NOMOVE = 0x0002
+                SWP_NOSIZE = 0x0001
+                SWP_NOACTIVATE = 0x0010
+                ctypes.windll.user32.SetWindowPos(cached_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE)
+        except Exception:
+            pass
+        
+    if key == ord('q'):
+        return True
+    try:
+        if cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE) < 1:
+            return True
+    except Exception:
+        return True
+    return False
+
+print("[SYSTEM] Sistem Kursor Magic Bimanual Aktif! Tekan 'q' atau tombol X pada window untuk keluar.")
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -199,8 +278,7 @@ while cap.isOpened():
         prev_right_angle = prev_left_angle = prev_scroll_x = prev_scroll_y = None
         pinch_start_time = None
         
-        cv2.imshow('Magic Cursor - Aikoo', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'): break
+        if display_and_check_exit(frame): break
         continue
 
     # ----------------- LOGIKA 4: KEYBOARD HANTU TOGGLE -----------------
@@ -552,8 +630,7 @@ while cap.isOpened():
         cv2.rectangle(frame, (0, 0), (w_cam, h_cam), (255, 255, 255), -1)
         flash_frames -= 1
 
-    cv2.imshow('Magic Cursor - Aikoo', frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if display_and_check_exit(frame):
         break
 
 cap.release()
