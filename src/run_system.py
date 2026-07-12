@@ -16,14 +16,23 @@ hands = mp_hands.Hands(
     min_detection_confidence=0.7,
     min_tracking_confidence=0.5
 )
-teretyuiod_active = False
+
+# State Sistem & Manajemen Kunci (Inisialisasi Variabel Kritis)
+is_paused = False
+keyboard_active = False
 is_dragging = False
 pinch_start_time = None
+
+# Konfigurasi Pengamanan OS PyAutoGUI (Failsafe & Zero-Delay)
+pyautogui.FAILSAFE = True
+pyautogui.PAUSE = 0.0
 
 # Cooldown & Timer State
 last_click_time = 0.0
 last_swipe_time = 0.0
 last_typed_time = 0.0
+last_pause_toggle_time = 0.0
+last_keyboard_toggle_time = 0.0
 keyboard_toggle_start = None
 pause_toggle_start = None
 screenshot_start = None
@@ -239,23 +248,30 @@ while cap.isOpened():
                 right_hand_active = True
                 hand_landmarks_right = hand_landmarks
 
-    # Lakukan prediksi jika minimal ada 1 tangan aktif
+    # Lakukan prediksi dengan Confidence Thresholding (Minimal 75% Keyakinan)
     gesture = None
     if left_hand_active or right_hand_active:
-        # Gabungkan koordinat Kiri & Kanan (126 Fitur)
         X_input = left_hand_coords + right_hand_coords
         X_scaled = scaler.transform([X_input])
-        prediction = model.predict(X_scaled)
-        gesture = int(prediction[0])
+        if hasattr(model, 'predict_proba'):
+            probs = model.predict_proba(X_scaled)[0]
+            max_prob = np.max(probs)
+            if max_prob >= 0.75:  # Confidence threshold untuk mencegah false positive
+                gesture = int(np.argmax(probs))
+        else:
+            prediction = model.predict(X_scaled)
+            gesture = int(prediction[0])
 
     # ----------------- LOGIKA 4: LOCK / UNLOCK (PAUSE) -----------------
+    # Menggunakan Non-blocking timer (tanpa time.sleep) untuk mencegah UI freeze
     if (left_hand_active or right_hand_active) and gesture == 7:
         if pause_toggle_start is None:
             pause_toggle_start = time.time()
         elif time.time() - pause_toggle_start > 1.0:
-            is_paused = not is_paused
+            if time.time() - last_pause_toggle_time > 1.5:
+                is_paused = not is_paused
+                last_pause_toggle_time = time.time()
             pause_toggle_start = None
-            time.sleep(0.5)  # Jeda sejenak untuk menghindari toggle ganda
     else:
         pause_toggle_start = None
 
@@ -282,13 +298,15 @@ while cap.isOpened():
         continue
 
     # ----------------- LOGIKA 4: KEYBOARD HANTU TOGGLE -----------------
+    # Menggunakan Non-blocking timer untuk toggle hologram keyboard
     if left_hand_active and right_hand_active and gesture == 3:
         if keyboard_toggle_start is None:
             keyboard_toggle_start = time.time()
         elif time.time() - keyboard_toggle_start > 2.0:
-            keyboard_active = not keyboard_active
+            if time.time() - last_keyboard_toggle_time > 1.5:
+                keyboard_active = not keyboard_active
+                last_keyboard_toggle_time = time.time()
             keyboard_toggle_start = None
-            time.sleep(0.3)
     else:
         keyboard_toggle_start = None
 
