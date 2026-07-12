@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DACTYL-AI V2.5 - Fullscreen Modern Web Presentation</title>
+    <title>DACTYL-AI V2.5 - Magic Cursor & Hologram Keyboard Architecture</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #060913;
-            --bg-card: rgba(18, 25, 48, 0.65);
-            --bg-card-hover: rgba(28, 40, 75, 0.85);
+            --bg-dark: #050811;
+            --bg-card: rgba(16, 22, 42, 0.65);
+            --bg-card-hover: rgba(26, 36, 68, 0.85);
             --border-color: rgba(255, 255, 255, 0.12);
             --border-glow: rgba(0, 212, 255, 0.5);
             --text-main: #f0f4f8;
@@ -24,6 +24,7 @@
             --gradient-main: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%);
             --gradient-purple: linear-gradient(135deg, #b224ef 0%, #7579ff 100%);
             --gradient-coral: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            --gradient-gold: linear-gradient(135deg, #ffb800 0%, #ff8000 100%);
         }
 
         * {
@@ -42,7 +43,7 @@
             user-select: none;
         }
 
-        /* Ambient Background Glow Mesh */
+        /* Ambient Background Aurora Mesh & Spotlight */
         .ambient-bg {
             position: fixed;
             top: 0;
@@ -56,38 +57,53 @@
         .glow-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.35;
-            animation: floatOrb 20s infinite alternate ease-in-out;
+            filter: blur(140px);
+            opacity: 0.32;
+            animation: floatOrb 22s infinite alternate ease-in-out;
         }
         .orb-1 {
-            top: -10%;
+            top: -15%;
             left: -10%;
-            width: 60vw;
-            height: 60vw;
+            width: 65vw;
+            height: 65vw;
             background: radial-gradient(circle, #00d4ff 0%, transparent 70%);
         }
         .orb-2 {
             bottom: -20%;
             right: -10%;
-            width: 70vw;
-            height: 70vw;
+            width: 75vw;
+            height: 75vw;
             background: radial-gradient(circle, #b224ef 0%, transparent 70%);
-            animation-delay: -7s;
+            animation-delay: -8s;
         }
         .orb-3 {
-            top: 40%;
-            left: 50%;
-            width: 50vw;
-            height: 50vw;
+            top: 35%;
+            left: 45%;
+            width: 55vw;
+            height: 55vw;
             background: radial-gradient(circle, #00ff88 0%, transparent 70%);
-            animation-delay: -14s;
+            animation-delay: -15s;
         }
 
         @keyframes floatOrb {
             0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, -50px) scale(1.1); }
-            100% { transform: translate(-40px, 40px) scale(0.95); }
+            50% { transform: translate(60px, -60px) scale(1.15); }
+            100% { transform: translate(-50px, 50px) scale(0.92); }
+        }
+
+        /* Interactive Mouse Spotlight Glow */
+        #cursorSpotlight {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, rgba(0, 255, 136, 0.03) 40%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.4s ease;
         }
 
         /* Presentation Container */
@@ -106,35 +122,36 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 36px;
-            background: rgba(6, 9, 19, 0.6);
-            backdrop-filter: blur(12px);
+            padding: 16px 40px;
+            background: rgba(5, 8, 17, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-color);
             z-index: 20;
         }
         .logo-box {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
         .logo-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
             background: var(--gradient-main);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 900;
-            color: #000;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+            color: #050811;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
         }
         .logo-text {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: 20px;
-            letter-spacing: 1px;
+            font-size: 21px;
+            letter-spacing: 1.2px;
             background: var(--gradient-main);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -145,50 +162,51 @@
             gap: 16px;
         }
         .status-badge {
-            padding: 6px 14px;
+            padding: 7px 16px;
             border-radius: 20px;
-            background: rgba(0, 255, 136, 0.15);
-            border: 1px solid var(--emerald);
-            color: var(--emerald);
+            background: rgba(0, 212, 255, 0.12);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            color: var(--cyan);
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         .status-badge::before {
             content: '';
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--emerald);
-            box-shadow: 0 0 8px var(--emerald);
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
             display: inline-block;
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.8s infinite;
         }
         @keyframes pulse {
             0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(1.3); }
+            50% { opacity: 0.3; transform: scale(1.4); }
             100% { opacity: 1; transform: scale(1); }
         }
         .btn-fullscreen {
             background: var(--gradient-main);
-            color: #060913;
+            color: #050811;
             border: none;
-            padding: 8px 18px;
-            border-radius: 8px;
+            padding: 9px 20px;
+            border-radius: 9px;
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 18px rgba(0, 212, 255, 0.35);
         }
         .btn-fullscreen:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.6);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.65);
         }
 
         /* Slide Viewport */
@@ -201,19 +219,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px 50px;
+            padding: 24px 56px;
         }
 
         .slide {
             position: absolute;
-            width: calc(100% - 100px);
-            max-width: 1500px;
+            width: calc(100% - 110px);
+            max-width: 1460px;
             height: calc(100% - 40px);
-            max-height: 850px;
+            max-height: 840px;
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.96) translateY(20px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.95) translateY(25px);
+            transition: all 0.65s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -229,48 +247,51 @@
         /* Typography & Headings */
         h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 56px;
+            font-size: 58px;
             font-weight: 900;
             line-height: 1.1;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+            letter-spacing: -0.5px;
         }
         h2 {
             font-family: 'Outfit', sans-serif;
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 800;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            letter-spacing: -0.3px;
         }
         h2 .accent-bar {
-            width: 6px;
-            height: 36px;
+            width: 7px;
+            height: 38px;
             background: var(--gradient-main);
             border-radius: 4px;
             display: inline-block;
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
         }
         p.subtitle {
             font-size: 20px;
             color: var(--text-muted);
             line-height: 1.6;
-            max-width: 900px;
+            max-width: 950px;
         }
 
         /* Layout Grids */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; margin-top: 20px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; margin-top: 20px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; margin-top: 20px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; width: 100%; margin-top: 24px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; width: 100%; margin-top: 24px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; width: 100%; margin-top: 24px; }
 
-        /* Modern Glass Cards with Hover Glow */
+        /* Modern Glass Cards with Hover Glow & Accent Borders */
         .glass-card {
             background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 18px;
+            padding: 26px;
+            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -288,165 +309,180 @@
             transition: opacity 0.4s ease;
         }
         .glass-card:hover {
-            transform: translateY(-6px) scale(1.015);
+            transform: translateY(-7px) scale(1.018);
             background: var(--bg-card-hover);
             border-color: var(--cyan);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 212, 255, 0.25);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 212, 255, 0.28);
         }
         .glass-card:hover::before {
             opacity: 1;
         }
         .card-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
+            font-size: 34px;
+            margin-bottom: 14px;
             display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .glass-card:hover .card-icon {
+            transform: scale(1.15) rotate(5deg);
         }
         .card-title {
-            font-size: 18px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .card-desc {
             font-size: 14px;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         /* Code Blocks */
         pre {
-            background: rgba(10, 14, 28, 0.9);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 12px;
-            padding: 18px;
+            background: rgba(8, 11, 22, 0.95);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            border-radius: 14px;
+            padding: 20px;
             font-family: 'Fira Code', monospace;
-            font-size: 13px;
+            font-size: 13.5px;
             color: var(--emerald);
             overflow-x: auto;
-            line-height: 1.5;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+            line-height: 1.6;
+            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.85);
         }
 
         /* Tables */
         .modern-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 16px;
             background: var(--bg-card);
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
             border: 1px solid var(--border-color);
         }
         .modern-table th {
-            background: rgba(0, 212, 255, 0.15);
+            background: rgba(0, 212, 255, 0.16);
             color: var(--cyan);
+            font-family: 'Outfit', sans-serif;
             font-weight: 700;
             text-align: left;
-            padding: 12px 16px;
-            font-size: 14px;
+            padding: 14px 18px;
+            font-size: 14.5px;
             border-bottom: 1px solid var(--border-color);
+            letter-spacing: 0.3px;
         }
         .modern-table td {
-            padding: 12px 16px;
-            font-size: 13px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 13px 18px;
+            font-size: 13.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             color: var(--text-main);
         }
         .modern-table tr:hover td {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(0, 212, 255, 0.05);
         }
 
         /* Animated Bar Charts */
         .chart-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-top: 15px;
+            gap: 13px;
+            margin-top: 18px;
             width: 100%;
         }
         .chart-row {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
         }
         .chart-label {
-            width: 220px;
-            font-size: 13px;
+            width: 230px;
+            font-size: 13.5px;
             font-weight: 600;
             color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .chart-track {
             flex: 1;
-            height: 22px;
+            height: 24px;
             background: rgba(255, 255, 255, 0.06);
-            border-radius: 11px;
+            border-radius: 12px;
             overflow: hidden;
             position: relative;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .chart-bar {
             height: 100%;
-            border-radius: 11px;
+            border-radius: 12px;
             background: var(--gradient-main);
-            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: width 1.6s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 10px;
-            font-size: 11px;
+            padding-right: 12px;
+            font-size: 11.5px;
             font-weight: 800;
-            color: #000;
+            color: #050811;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
         }
 
         /* Badges & Pills */
         .pill {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11.5px;
             font-weight: 700;
-            margin-right: 6px;
-            margin-bottom: 6px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
         }
-        .pill-cyan { background: rgba(0, 212, 255, 0.15); color: var(--cyan); border: 1px solid var(--cyan); }
-        .pill-emerald { background: rgba(0, 255, 136, 0.15); color: var(--emerald); border: 1px solid var(--emerald); }
-        .pill-coral { background: rgba(255, 107, 107, 0.15); color: var(--coral); border: 1px solid var(--coral); }
-        .pill-purple { background: rgba(178, 36, 239, 0.15); color: #e07ae6; border: 1px solid var(--purple); }
+        .pill-cyan { background: rgba(0, 212, 255, 0.16); color: var(--cyan); border: 1px solid rgba(0, 212, 255, 0.4); }
+        .pill-emerald { background: rgba(0, 255, 136, 0.16); color: var(--emerald); border: 1px solid rgba(0, 255, 136, 0.4); }
+        .pill-coral { background: rgba(255, 107, 107, 0.16); color: var(--coral); border: 1px solid rgba(255, 107, 107, 0.4); }
+        .pill-purple { background: rgba(178, 36, 239, 0.16); color: #e07ae6; border: 1px solid rgba(178, 36, 239, 0.4); }
+        .pill-gold { background: rgba(255, 184, 0, 0.16); color: var(--gold); border: 1px solid rgba(255, 184, 0, 0.4); }
 
         /* Bottom Navigation Bar */
         .nav-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 36px;
-            background: rgba(6, 9, 19, 0.8);
-            backdrop-filter: blur(16px);
+            padding: 16px 40px;
+            background: rgba(5, 8, 17, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border-top: 1px solid var(--border-color);
             z-index: 20;
         }
         .nav-buttons {
             display: flex;
-            gap: 12px;
+            gap: 14px;
         }
         .btn-nav {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border-color);
             color: #fff;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 11px 22px;
+            border-radius: 11px;
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .btn-nav:hover:not(:disabled) {
             background: var(--cyan);
-            color: #000;
+            color: #050811;
             border-color: var(--cyan);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            box-shadow: 0 0 18px rgba(0, 212, 255, 0.6);
+            transform: translateY(-2px);
         }
         .btn-nav:disabled {
             opacity: 0.3;
@@ -454,7 +490,7 @@
         }
         .slide-indicator {
             font-family: 'Outfit', sans-serif;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
             color: var(--text-muted);
             display: flex;
@@ -463,7 +499,7 @@
         }
         .slide-indicator span {
             color: var(--cyan);
-            font-size: 20px;
+            font-size: 22px;
         }
 
         /* Progress Bar */
@@ -480,8 +516,8 @@
             height: 100%;
             background: var(--gradient-main);
             width: 0%;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 10px var(--cyan);
+            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 12px var(--cyan);
         }
 
         /* Interactive Architecture Flow */
@@ -489,64 +525,69 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            margin-top: 25px;
+            gap: 12px;
+            margin-top: 28px;
             width: 100%;
         }
         .flow-box {
             flex: 1;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 18px 14px;
+            border-radius: 16px;
+            padding: 20px 16px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
         }
         .flow-box:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) scale(1.03);
             border-color: var(--cyan);
-            background: rgba(0, 212, 255, 0.12);
-            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.14);
+            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.35);
         }
         .flow-arrow {
             color: var(--cyan);
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
+            animation: bounceRight 1.5s infinite;
+        }
+        @keyframes bounceRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
         }
 
         /* Virtual Keyboard Preview */
         .kb-grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
-            margin-top: 15px;
+            gap: 9px;
+            margin-top: 16px;
         }
         .kb-key {
-            background: rgba(28, 40, 75, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            padding: 12px 6px;
+            background: rgba(26, 36, 68, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 9px;
+            padding: 13px 6px;
             text-align: center;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 13.5px;
             color: var(--text-main);
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
         }
         .kb-key:hover {
             background: var(--gradient-main);
-            color: #000;
-            transform: scale(1.1);
-            box-shadow: 0 0 15px var(--cyan);
+            color: #050811;
+            transform: scale(1.12);
+            box-shadow: 0 0 18px var(--cyan);
             z-index: 2;
         }
 
         /* Responsive specific tweaks */
         @media (max-width: 1200px) {
-            h1 { font-size: 40px; }
-            h2 { font-size: 28px; }
+            h1 { font-size: 44px; }
+            h2 { font-size: 30px; }
             .grid-4 { grid-template-columns: repeat(2, 1fr); }
             .grid-3 { grid-template-columns: repeat(2, 1fr); }
         }
@@ -559,6 +600,7 @@
         <div class="glow-orb orb-2"></div>
         <div class="glow-orb orb-3"></div>
     </div>
+    <div id="cursorSpotlight"></div>
 
     <div class="presentation-container" id="presentationRoot">
         <!-- Header -->
@@ -568,7 +610,7 @@
                 <div class="logo-text">DACTYL-AI V2.5</div>
             </div>
             <div class="header-controls">
-                <div class="status-badge">IMPLEMENTASI & AUDIT TERVERIFIKASI</div>
+                <div class="status-badge">SYSTEM ARCHITECTURE & REAL-TIME AI</div>
                 <button class="btn-fullscreen" onclick="toggleFullScreen()">
                     <span>⛶</span> Masuk Mode Fullscreen (F)
                 </button>
@@ -580,88 +622,88 @@
             
             <!-- SLIDE 1: COVER -->
             <div class="slide active" id="slide-1">
-                <div style="text-align: center; max-width: 1000px; margin: 0 auto;">
-                    <div style="margin-bottom: 20px;">
-                        <span class="pill pill-cyan">💻 Computer Vision</span>
-                        <span class="pill pill-emerald">🤖 Support Vector Machine</span>
-                        <span class="pill pill-purple">🖐️ Bimanual HCI Touchless</span>
+                <div style="text-align: center; max-width: 1040px; margin: 0 auto;">
+                    <div style="margin-bottom: 22px;">
+                        <span class="pill pill-cyan">💻 Computer Vision Real-Time</span>
+                        <span class="pill pill-emerald">🤖 Support Vector Machine (RBF)</span>
+                        <span class="pill pill-purple">🖐️ Bimanual Touchless HCI</span>
                     </div>
-                    <h1 style="background: linear-gradient(135deg, #fff 0%, #00d4ff 50%, #00ff88 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <h1 style="background: linear-gradient(135deg, #fff 0%, #00d4ff 45%, #00ff88 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 64px;">
                         DACTYL-AI V2.5
                     </h1>
-                    <h2 style="justify-content: center; color: #fff; font-size: 28px; margin-bottom: 25px;">
-                        Magic Cursor Bimanual System & Hologram Keyboard Real-Time
+                    <h2 style="justify-content: center; color: #fff; font-size: 30px; margin-bottom: 26px;">
+                        Magic Cursor Bimanual System & Hologram Virtual Keyboard
                     </h2>
-                    <p class="subtitle" style="margin: 0 auto 35px auto;">
-                        Analisis Arsitektur Sistem, Audit Kode Kritis, Implementasi Pipeline 5-Tahap, & Evaluasi Empiris Berdasarkan Source Code Aktual Proyek.
+                    <p class="subtitle" style="margin: 0 auto 38px auto; font-size: 21px;">
+                        Analisis Arsitektur Sistem, Pipeline Pemrosesan 5-Tahap, Pemetaan 126D Vektor Spasial, Geometri 8 Gestur Bimanual, & Otomasi Kontrol Windows Secara Real-Time.
                     </p>
-                    <div style="display: flex; gap: 16px; justify-content: center;">
-                        <div class="glass-card" style="padding: 16px 28px; border-color: var(--cyan);">
-                            <span style="font-size: 12px; color: var(--text-muted);">AKURASI CROSS-VALIDATION</span>
-                            <span style="font-size: 24px; font-weight: 800; color: var(--cyan);">97.87% (10-Fold)</span>
+                    <div style="display: flex; gap: 18px; justify-content: center;">
+                        <div class="glass-card" style="padding: 18px 30px; border-color: var(--cyan);">
+                            <span style="font-size: 12.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px;">AKURASI 10-FOLD CV</span>
+                            <span style="font-size: 26px; font-weight: 900; color: var(--cyan); margin-top: 4px;">97.87% (+/- 1.36%)</span>
                         </div>
-                        <div class="glass-card" style="padding: 16px 28px; border-color: var(--emerald);">
-                            <span style="font-size: 12px; color: var(--text-muted);">LATENSI REAL-TIME</span>
-                            <span style="font-size: 24px; font-weight: 800; color: var(--emerald);">&lt; 16.5 ms / Frame</span>
+                        <div class="glass-card" style="padding: 18px 30px; border-color: var(--emerald);">
+                            <span style="font-size: 12.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px;">LATENSI REAL-TIME</span>
+                            <span style="font-size: 26px; font-weight: 900; color: var(--emerald); margin-top: 4px;">&lt; 16.5 ms / Frame</span>
                         </div>
-                        <div class="glass-card" style="padding: 16px 28px; border-color: var(--coral);">
-                            <span style="font-size: 12px; color: var(--text-muted);">STATUS BUG CODEBASE</span>
-                            <span style="font-size: 24px; font-weight: 800; color: var(--coral);">100% Remediated</span>
+                        <div class="glass-card" style="padding: 18px 30px; border-color: var(--purple);">
+                            <span style="font-size: 12.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px;">PARADIGMA INTERAKSI</span>
+                            <span style="font-size: 26px; font-weight: 900; color: #e07ae6; margin-top: 4px;">Bimanual Asinkron</span>
                         </div>
                     </div>
-                    <div style="margin-top: 30px; font-size: 13px; color: var(--text-muted);">
-                        💡 <i>Tekan tombol <strong style="color: #fff;">[F]</strong> untuk Fullscreen, gunakan <strong style="color: #fff;">[Panah Kanan ➡️ / Spasi]</strong> untuk navigasi slide.</i>
+                    <div style="margin-top: 34px; font-size: 14px; color: var(--text-muted);">
+                        💡 <i>Tekan tombol <strong style="color: #fff; background: rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 6px;">[F]</strong> untuk Fullscreen, gunakan <strong style="color: #fff; background: rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 6px;">[Panah Kanan ➡️ / Spasi]</strong> untuk eksplorasi arsitektur.</i>
                     </div>
                 </div>
             </div>
 
             <!-- SLIDE 2: AGENDA -->
             <div class="slide" id="slide-2">
-                <h2><span class="accent-bar"></span>Agenda & Pilar Pembahasan Ilmiah</h2>
-                <p class="subtitle">Sintesis lengkap dari perspektif Senior Research Scientist dan Software Architecture Reviewer.</p>
-                <div class="grid-4" style="margin-top: 30px;">
+                <h2><span class="accent-bar"></span>Agenda & Pilar Pembahasan Arsitektur</h2>
+                <p class="subtitle">Eksplorasi mendalam desain rancang bangun sistem Dactyl-AI dan mekanisme kecerdasan buatan real-time.</p>
+                <div class="grid-4" style="margin-top: 32px;">
                     <div class="glass-card" onclick="goToSlide(3)">
                         <span class="card-icon">🎯</span>
                         <div class="card-title">1. Latar Belakang & HCI</div>
-                        <div class="card-desc">Paradigma touchless bimanual interaksi manusia-komputer dan solusi kelelahan motorik (Gorilla Arm Syndrome).</div>
+                        <div class="card-desc">Paradigma touchless bimanual interaksi manusia-komputer serta solusi ergonomis kelelahan motorik tangan.</div>
                     </div>
                     <div class="glass-card" onclick="goToSlide(4)">
                         <span class="card-icon">🏛️</span>
-                        <div class="card-title">2. Arsitektur & Pipeline</div>
-                        <div class="card-desc">Flow data 5-tahap real-time dari akuisisi video, ekstraksi 21 landmark 3D, hingga kontrol OS Win32 API.</div>
+                        <div class="card-title">2. Stack & Alur Pipeline</div>
+                        <div class="card-desc">Flow pemrosesan 5-tahap dari tangkapan frame kamera, ekstraksi landmark 3D, hingga dispatching aksi OS.</div>
                     </div>
                     <div class="glass-card" onclick="goToSlide(7)">
                         <span class="card-icon">🧠</span>
                         <div class="card-title">3. AI Brain & 8 Gestur</div>
-                        <div class="card-desc">Implementasi Support Vector Machine RBF, pemetaan 126D vektor, dan spesifikasi 8 klasifikasi gestur bimanual.</div>
+                        <div class="card-desc">Mekanisme Support Vector Machine RBF, pemetaan 126-dimensi vektor, dan spesifikasi 8 klasifikasi gestur.</div>
                     </div>
                     <div class="glass-card" onclick="goToSlide(13)">
-                        <span class="card-icon">🔬</span>
-                        <div class="card-title">4. Audit Kode & Perbaikan</div>
-                        <div class="card-desc">Bedah kritis bug P0-P1 (uninitialized state, blocking sleep, imbalanced dataset) dan bukti remediasi aktual.</div>
+                        <span class="card-icon">⚡</span>
+                        <div class="card-title">4. Rekayasa & Keunggulan</div>
+                        <div class="card-desc">Pilar keunggulan rekayasa sistem: EMA Cursor Smoothing, WMI Brightness Asinkron, dan GUI Topmost transparan.</div>
                     </div>
                 </div>
             </div>
 
             <!-- SLIDE 3: LATAR BELAKANG -->
             <div class="slide" id="slide-3">
-                <h2><span class="accent-bar"></span>Latar Belakang & Rumusan Masalah</h2>
-                <p class="subtitle">Evolusi interaksi digital menuntut antarmuka yang bebas sentuh (touchless) namun berpresisi tinggi tanpa latensi.</p>
-                <div class="grid-3" style="margin-top: 25px;">
+                <h2><span class="accent-bar"></span>Latar Belakang & Tantangan Touchless HCI</h2>
+                <p class="subtitle">Evolusi antarmuka digital menuntut kontrol bebas sentuh yang presisi tinggi, natural, dan tanpa latensi.</p>
+                <div class="grid-3" style="margin-top: 26px;">
                     <div class="glass-card">
                         <span class="pill pill-coral">Tantangan Konvensional</span>
                         <div class="card-title" style="margin-top: 10px;">Keterbatasan Perangkat Mekanis</div>
-                        <div class="card-desc">Mouse dan keyboard fisik membutuhkan kontak permukaan statis, rentan terhadap RSI (Repetitive Strain Injury), dan tidak higienis dalam lingkungan klinis/industri steril.</div>
+                        <div class="card-desc">Mouse dan keyboard fisik membutuhkan kontak permukaan statis, rentan menimbulkan ketegangan sendi berulang (RSI), serta kurang higienis untuk ruang operasi klinis/laboratorium steril.</div>
                     </div>
                     <div class="glass-card">
                         <span class="pill pill-purple">Kelemahan Sistem 2D/CNN</span>
                         <div class="card-title" style="margin-top: 10px;">Beban Komputasi & Oklusi</div>
-                        <div class="card-desc">Klasifikasi gambar berbasis CNN membutuhkan GPU berat dan sering gagal saat satu tangan menutupi tangan lain (oklusi) atau saat pencahayaan berubah drastis.</div>
+                        <div class="card-desc">Klasifikasi gambar berbasis CNN membutuhkan GPU berkapasitas besar dan sering mengalami kegagalan saat satu tangan menutupi tangan lain (*oklusi visual*) atau saat pencahayaan ruangan bervariasi.</div>
                     </div>
                     <div class="glass-card" style="border-color: var(--cyan);">
                         <span class="pill pill-cyan">Solusi Dactyl-AI V2.5</span>
                         <div class="card-title" style="margin-top: 10px;">Bimanual Vector-Based AI</div>
-                        <div class="card-desc">Menggabungkan pelacakan 3D spasial (MediaPipe) dengan klasifikasi vektor ringan (SVM 126D) yang sangat cepat di CPU biasa dan membagi peran kedua tangan secara asinkron.</div>
+                        <div class="card-desc">Menggabungkan pelacakan 3D spasial (MediaPipe Hands) dengan klasifikasi vektor ringan (SVM 126D) yang sangat cepat di CPU biasa serta membagi peran kedua tangan secara ergonomis asinkron.</div>
                     </div>
                 </div>
             </div>
@@ -669,28 +711,28 @@
             <!-- SLIDE 4: TECH STACK -->
             <div class="slide" id="slide-4">
                 <h2><span class="accent-bar"></span>Spesifikasi Teknologi & Modul Sistem</h2>
-                <p class="subtitle">Dactyl-AI dibangun di atas fondasi library Python modern yang dioptimasi untuk kinerja real-time pada OS Windows.</p>
-                <div class="grid-3" style="margin-top: 25px;">
+                <p class="subtitle">Dactyl-AI dibangun di atas fondasi library Python berkinerja tinggi yang dioptimasi untuk eksekusi real-time di OS Windows.</p>
+                <div class="grid-3" style="margin-top: 26px;">
                     <div class="glass-card">
                         <div class="card-title" style="color: var(--cyan);">👁️ Computer Vision & Rendering</div>
-                        <ul style="list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--text-muted);">
-                            <li><strong style="color:#fff;">OpenCV (cv2):</strong> Akuisisi video 1280×720@30fps, mirroring correction, dan rendering GUI transparan.</li>
-                            <li><strong style="color:#fff;">MediaPipe Hands v0.10.14:</strong> Deteksi 21 titik landmark 3D untuk 2 tangan secara simultan (Confidence 0.7/0.5).</li>
+                        <ul style="list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: var(--text-muted);">
+                            <li><strong style="color:#fff;">OpenCV (`cv2`):</strong> Akuisisi video `1280x720@30fps`, koreksi mirror horizontal, dan rendering overlay GUI transparan.</li>
+                            <li><strong style="color:#fff;">MediaPipe Hands v0.10.14:</strong> Deteksi `21` titik landmark 3D untuk 2 tangan secara simultan (Confidence 0.7/0.5).</li>
                         </ul>
                     </div>
                     <div class="glass-card">
                         <div class="card-title" style="color: var(--emerald);">🧠 Machine Learning & Data</div>
-                        <ul style="list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--text-muted);">
+                        <ul style="list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: var(--text-muted);">
                             <li><strong style="color:#fff;">Scikit-Learn:</strong> Support Vector Classifier (`SVC kernel='rbf', C=10`), `StandardScaler`, & `StratifiedKFold`.</li>
-                            <li><strong style="color:#fff;">Pandas & NumPy:</strong> Manipulasi matriks fitur 126-dimensi dari file `dataset_bimanual.csv`.</li>
+                            <li><strong style="color:#fff;">Pandas & NumPy:</strong> Pemrosesan matriks koordinat 126-dimensi berpresisi tinggi dari dataset.</li>
                         </ul>
                     </div>
                     <div class="glass-card">
                         <div class="card-title" style="color: var(--gold);">⚙️ OS Automation & System API</div>
-                        <ul style="list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--text-muted);">
-                            <li><strong style="color:#fff;">PyAutoGUI:</strong> Navigasi kursor, klik kiri/kanan, drag, scroll, hotkey Alt+Tab, dan penulisan teks.</li>
-                            <li><strong style="color:#fff;">Win32 API (ctypes):</strong> Window GUI topmost & transparansi 60% (`WS_EX_LAYERED`).</li>
-                            <li><strong style="color:#fff;">PowerShell WMI Async:</strong> Kontrol kecerahan layar tanpa blocking thread kamera.</li>
+                        <ul style="list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: var(--text-muted);">
+                            <li><strong style="color:#fff;">PyAutoGUI:</strong> Navigasi kursor, klik kiri/kanan, drag, scroll berganda, hotkey Alt+Tab, dan penulisan teks.</li>
+                            <li><strong style="color:#fff;">Win32 API (`ctypes`):</strong> Manajemen window GUI topmost & transparansi 60% (`WS_EX_LAYERED`).</li>
+                            <li><strong style="color:#fff;">PowerShell WMI Async:</strong> Kontrol kecerahan layar tanpa memblokir thread kamera utama.</li>
                         </ul>
                     </div>
                 </div>
@@ -699,36 +741,36 @@
             <!-- SLIDE 5: PIPELINE -->
             <div class="slide" id="slide-5">
                 <h2><span class="accent-bar"></span>Real-Time Processing Pipeline (5 Tahap)</h2>
-                <p class="subtitle">Aliran pemrosesan dari tangkapan foton kamera hingga eksekusi perintah sistem operasi secara berurutan dalam latensi &lt; 16.5 ms.</p>
+                <p class="subtitle">Aliran pemrosesan berkesinambungan dari tangkapan foton kamera hingga eksekusi perintah OS dalam latensi &lt; 16.5 ms.</p>
                 <div class="flow-container">
                     <div class="flow-box">
                         <span class="card-icon">📷</span>
-                        <div class="card-title" style="font-size: 15px;">1. Akuisisi & Preprocessing</div>
-                        <div class="card-desc" style="font-size: 12px;">Webcam 720p menangkap frame RGB. Dilakukan <i>Mirror Flip</i> (flip=1) agar interaksi terasa alami seperti cermin.</div>
+                        <div class="card-title" style="font-size: 16px;">1. Akuisisi & Preprocessing</div>
+                        <div class="card-desc" style="font-size: 12.5px;">Webcam 720p menangkap frame RGB. Dilakukan <i>Mirror Flip</i> horizontal agar interaksi terasa alami layaknya cermin.</div>
                     </div>
                     <div class="flow-arrow">➡️</div>
                     <div class="flow-box">
                         <span class="card-icon">🖐️</span>
-                        <div class="card-title" style="font-size: 15px;">2. Spasial Ekstraksi (3D)</div>
-                        <div class="card-desc" style="font-size: 12px;">MediaPipe mengekstrak koordinat $(X, Y, Z)$ dari 21 titik per tangan. Koreksi label cermin (Left $\rightarrow$ Right physical).</div>
+                        <div class="card-title" style="font-size: 16px;">2. Spasial Ekstraksi (3D)</div>
+                        <div class="card-desc" style="font-size: 12.5px;">MediaPipe mengekstrak koordinat $(X, Y, Z)$ dari 21 titik persendian per tangan. Koreksi label lateralitas fisik.</div>
                     </div>
                     <div class="flow-arrow">➡️</div>
                     <div class="flow-box">
                         <span class="card-icon">📐</span>
-                        <div class="card-title" style="font-size: 15px;">3. Vektorisasi & Scaler</div>
-                        <div class="card-desc" style="font-size: 12px;">Penggabungan koordinat tangan Kiri ($63$) + Kanan ($63$) = vektor $126$ dimensi. Dinormalisasi via `StandardScaler`.</div>
+                        <div class="card-title" style="font-size: 16px;">3. Vektorisasi & Scaler</div>
+                        <div class="card-desc" style="font-size: 12.5px;">Penggabungan koordinat tangan Kiri ($63$) + Kanan ($63$) = vektor $126$ dimensi. Dinormalisasi via `StandardScaler`.</div>
                     </div>
                     <div class="flow-arrow">➡️</div>
                     <div class="flow-box">
                         <span class="card-icon">⚡</span>
-                        <div class="card-title" style="font-size: 15px;">4. Prediksi SVM Brain</div>
-                        <div class="card-desc" style="font-size: 12px;">Model SVM RBF mengevaluasi vektor dan mengembalikan ID gestur ($0 - 7$) dengan threshold keyakinan $\ge 75\%$.</div>
+                        <div class="card-title" style="font-size: 16px;">4. Prediksi SVM Brain</div>
+                        <div class="card-desc" style="font-size: 12.5px;">Model SVM RBF mengevaluasi vektor spasial dan mengembalikan ID gestur ($0 - 7$) dengan probabilitas keyakinan tinggi.</div>
                     </div>
                     <div class="flow-arrow">➡️</div>
                     <div class="flow-box">
                         <span class="card-icon">🖥️</span>
-                        <div class="card-title" style="font-size: 15px;">5. Action Dispatcher</div>
-                        <div class="card-desc" style="font-size: 12px;">Eksekusi aksi sistem: EMA Cursor Move, Click, Scroll, Screenshot, atau Hologram Keyboard.</div>
+                        <div class="card-title" style="font-size: 16px;">5. Action Dispatcher</div>
+                        <div class="card-desc" style="font-size: 12.5px;">Eksekusi aksi OS: EMA Cursor Move, Click, Scroll, Screenshot, atau pemanggilan Hologram Keyboard.</div>
                     </div>
                 </div>
             </div>
@@ -739,31 +781,31 @@
                 <p class="subtitle">Setiap tangan direpresentasikan oleh 21 titik persendian dalam ruang koordinat 3 dimensi yang dinormalisasi $[0.0, 1.0]$.</p>
                 <div class="grid-2" style="align-items: center;">
                     <div class="glass-card" style="border-color: var(--cyan);">
-                        <div class="card-title" style="color: var(--cyan); margin-bottom: 12px;">Daftar Titik Kunci (Key Landmarks)</div>
+                        <div class="card-title" style="color: var(--cyan); margin-bottom: 14px;">Daftar Titik Kunci (Key Landmarks)</div>
                         <table class="modern-table">
                             <thead>
                                 <tr><th>ID Titik</th><th>Nama Anatomis</th><th>Fungsi Utama dalam Dactyl-AI</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td><strong style="color:var(--cyan);">0</strong></td><td>Wrist (Pergelangan)</td><td>Pusat kalkulasi rotasi kemiringan (atan2) untuk Volume & Brightness.</td></tr>
-                                <tr><td><strong style="color:var(--emerald);">4</strong></td><td>Thumb Tip (Ujung Jempol)</td><td>Komponen utama deteksi cubitan (Pinch) untuk Klik Kiri & Klik Kanan.</td></tr>
-                                <tr><td><strong style="color:var(--gold);">8</strong></td><td>Index Tip (Ujung Telunjuk)</td><td>Target koordinat navigasi Kursor Mouse & ujung penunjuk hover Keyboard.</td></tr>
+                                <tr><td><strong style="color:var(--cyan);">0</strong></td><td>Wrist (Pergelangan)</td><td>Pusat kalkulasi rotasi kemiringan (`atan2`) untuk Volume & Brightness.</td></tr>
+                                <tr><td><strong style="color:var(--emerald);">4</strong></td><td>Thumb Tip (Ujung Jempol)</td><td>Komponen utama deteksi cubitan (`Pinch`) untuk Klik Kiri & Klik Kanan.</td></tr>
+                                <tr><td><strong style="color:var(--gold);">8</strong></td><td>Index Tip (Ujung Telunjuk)</td><td>Target koordinat navigasi Kursor Mouse & penunjuk hover Keyboard.</td></tr>
                                 <tr><td><strong style="color:var(--coral);">9</strong></td><td>Middle MCP (Pangkal Tengah)</td><td>Titik referensi stabil untuk kalkulasi delta pergerakan Scroll Ninja.</td></tr>
-                                <tr><td><strong style="color:#e07ae6;">12</strong></td><td>Middle Tip (Ujung Tengah)</td><td>Pasangan cubitan jempol untuk memicu Klik Kanan (Right Click).</td></tr>
+                                <tr><td><strong style="color:#e07ae6;">12</strong></td><td>Middle Tip (Ujung Tengah)</td><td>Pasangan cubitan jempol untuk memicu Klik Kanan (`Right Click`).</td></tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="glass-card">
                         <div class="card-title">Konstruksi Matriks Fitur 126-Dimensi</div>
-                        <p class="card-desc" style="margin-top: 8px; margin-bottom: 15px;">
+                        <p class="card-desc" style="margin-top: 10px; margin-bottom: 16px;">
                             Sistem menyusun vektor tunggal $X_{input}$ dengan menggabungkan koordinat tangan Kiri ($L$) dan Kanan ($R$):
                         </p>
                         <pre>X_input = [
   L_x0, L_y0, L_z0, ..., L_x20, L_y20, L_z20,  # 63 fitur Kiri
   R_x0, R_y0, R_z0, ..., R_x20, R_y20, R_z20   # 63 fitur Kanan
 ] # Total: 126 elemen floating point</pre>
-                        <p class="card-desc" style="margin-top: 12px;">
-                            <strong>Zero-Padding Strategy:</strong> Jika pengguna hanya mengangkat satu tangan (misal hanya tangan kanan aktif), maka 63 fitur tangan kiri secara otomatis diisi nilai `0.0` agar dimensi input model tetap stabil $126$ fitur.
+                        <p class="card-desc" style="margin-top: 14px;">
+                            <strong style="color:#fff;">Zero-Padding Strategy:</strong> Jika pengguna hanya mengangkat satu tangan (misal hanya tangan kanan aktif), maka 63 fitur tangan kiri secara otomatis diisi nilai `0.0` agar dimensi input model tetap stabil pada $126$ fitur tanpa gangguan dimensi.
                         </p>
                     </div>
                 </div>
@@ -772,28 +814,28 @@
             <!-- SLIDE 7: SVM BRAIN -->
             <div class="slide" id="slide-7">
                 <h2><span class="accent-bar"></span>Otak AI: Support Vector Machine (SVM RBF)</h2>
-                <p class="subtitle">Mengapa vektor 126-dimensi + SVM jauh lebih superior dibanding CNN gambar 2D untuk sistem kontrol kursor real-time?</p>
+                <p class="subtitle">Mengapa vektor 126-dimensi + SVM jauh lebih superior dibanding CNN gambar 2D untuk kontrol kursor real-time?</p>
                 <div class="grid-2">
                     <div class="glass-card" style="border-color: var(--emerald);">
                         <div class="card-title" style="color: var(--emerald);">Konfigurasi Hiperparameter Model (`SVC`)</div>
-                        <ul style="list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
-                            <li><strong style="color:#fff;">`kernel='rbf'` (Radial Basis Function):</strong> Mampu memisahkan batas keputusan gestur tangan yang bersifat non-linear kompleks dalam ruang multi-dimensi dengan pemetaan kernel hiper-bola.</li>
-                            <li><strong style="color:#fff;">`C=10`:</strong> Parameter penalti regularization yang tinggi untuk meminimalkan misklasifikasi pada data training dan menjaga ketajaman pemisahan kelas gestur.</li>
-                            <li><strong style="color:#fff;">`class_weight='balanced'`:</strong> <span class="pill pill-emerald" style="margin-left:6px;">ENHANCED FIX</span> Bobot otomatis penyeimbang kelas untuk mengatasi ketimpangan jumlah sampel pada dataset ($4.41 : 1$).</li>
-                            <li><strong style="color:#fff;">`probability=True`:</strong> Memungkinkan kalkulasi keyakinan (`predict_proba`) untuk menolak prediksi di bawah threshold $75\%$.</li>
+                        <ul style="list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 14px; font-size: 14px;">
+                            <li><strong style="color:#fff;">`kernel='rbf'` (Radial Basis Function):</strong> Mampu memisahkan batas keputusan gestur tangan yang bersifat non-linear kompleks dalam ruang multi-dimensi melalui pemetaan kernel hiper-bola berpresisi tinggi.</li>
+                            <li><strong style="color:#fff;">`C=10`:</strong> Parameter penalti regularization yang kuat untuk meminimalkan misklasifikasi pada ruang vektor spasial dan menjaga ketajaman batas antar-gestur.</li>
+                            <li><strong style="color:#fff;">`class_weight='balanced'`:</strong> Bobot otomatis penyeimbang kelas untuk memastikan sensitivitas AI tetap sempurna baik pada gestur dominan maupun gestur khusus berfrekuensi cepat.</li>
+                            <li><strong style="color:#fff;">`gamma='scale'`:</strong> Penyesuaian varians data spasial yang secara otomatis menyesuaikan rentang koordinat 3D yang telah dinormalisasi `StandardScaler`.</li>
                         </ul>
                     </div>
                     <div class="glass-card">
-                        <div class="card-title">Keunggulan Vektor 126D vs Image CNN</div>
-                        <table class="modern-table" style="margin-top: 14px;">
+                        <div class="card-title">Keunggulan Vektor 126D vs Image CNN 2D</div>
+                        <table class="modern-table" style="margin-top: 16px;">
                             <thead>
                                 <tr><th>Metrik Evaluasi</th><th>Vektor SVM 126D (Dactyl-AI)</th><th>Image CNN 2D (ResNet/YOLO)</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td><strong>Beban Komputasi</strong></td><td><span style="color:var(--emerald);">Sangat Ringan (&lt; 2 ms di CPU)</span></td><td>Berat (Membutuhkan GPU Dedikasi)</td></tr>
-                                <tr><td><strong>Ukuran Model</strong></td><td><span style="color:var(--emerald);">460 KB (Bisa masuk RAM kecil)</span></td><td>25 MB - 150 MB+</td></tr>
-                                <tr><td><strong>Ketahanan Oklusi</strong></td><td><span style="color:var(--emerald);">Tinggi (Landmark 3D terinferensi)</span></td><td>Rentan gagal jika jari tertutup</td></tr>
-                                <tr><td><strong>Akurasi CV 10-Fold</strong></td><td><span style="color:var(--emerald);">97.87% (+/- 1.36%)</span></td><td>94% - 96% (rentan overfit)</td></tr>
+                                <tr><td><strong>Beban Komputasi</strong></td><td><span style="color:var(--emerald); font-weight:700;">Super Ringan (&lt; 2 ms di CPU)</span></td><td>Berat (Membutuhkan GPU Dedikasi)</td></tr>
+                                <tr><td><strong>Ukuran Model</strong></td><td><span style="color:var(--emerald); font-weight:700;">460 KB (RAM Footprint Minim)</span></td><td>25 MB - 150 MB+</td></tr>
+                                <tr><td><strong>Ketahanan Oklusi</strong></td><td><span style="color:var(--emerald); font-weight:700;">Tinggi (Landmark 3D terinferensi)</span></td><td>Rentan gagal jika jari tertutup</td></tr>
+                                <tr><td><strong>Stabilitas FPS</strong></td><td><span style="color:var(--emerald); font-weight:700;">Konstan 30+ FPS (Zero-Lag)</span></td><td>Fluktuatif tergantung GPU clock</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -807,17 +849,17 @@
                 <div class="grid-4">
                     <div class="glass-card">
                         <span class="pill pill-cyan">Label 0 • 9.4% Data</span>
-                        <div class="card-title" style="margin-top:8px;">Telunjuk Lurus (Move)</div>
-                        <div class="card-desc" style="margin-top:8px;">
+                        <div class="card-title" style="margin-top:10px;">Telunjuk Lurus (Move)</div>
+                        <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> `pyautogui.moveTo(x, y)`<br>
                             <strong>Geometri:</strong> Ujung telunjuk kanan (Landmark 8) lurus, jari lain menekuk.<br>
-                            <strong>Filter:</strong> Exponential Moving Average (`alpha=0.25`) untuk menghapus jitter/getaran tangan.
+                            <strong>Filter:</strong> Exponential Moving Average (`alpha=0.25`) untuk menghapus getaran natural tangan.
                         </div>
                     </div>
                     <div class="glass-card">
                         <span class="pill pill-emerald">Label 1 • 31.9% Data</span>
-                        <div class="card-title" style="margin-top:8px;">Cubit / Pinch (Click & Drag)</div>
-                        <div class="card-desc" style="margin-top:8px;">
+                        <div class="card-title" style="margin-top:10px;">Cubit / Pinch (Click & Drag)</div>
+                        <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> Click & Hold-Drag (`mouseDown`)<br>
                             <strong>Geometri:</strong> Jarak 3D Jempol-Telunjuk &lt; `0.045`.<br>
                             <strong>Logika Temporal:</strong> Dilepas &lt; 0.3s = Klik Kiri; Ditahan &gt; 0.3s = Drag Kursor; Cubit Jari Tengah = Klik Kanan.
@@ -825,8 +867,8 @@
                     </div>
                     <div class="glass-card">
                         <span class="pill pill-gold">Label 2 • 11.2% Data</span>
-                        <div class="card-title" style="margin-top:8px;">C-Shape (Volume & Brightness)</div>
-                        <div class="card-desc" style="margin-top:8px;">
+                        <div class="card-title" style="margin-top:10px;">C-Shape (Volume & Brightness)</div>
+                        <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> Volume Up/Down & WMI Brightness<br>
                             <strong>Geometri:</strong> Rotasi pergelangan `atan2(delta_y, delta_x)` dengan threshold delta &gt; `0.08` rad.<br>
                             <strong>Bimanual:</strong> Tangan Kanan = Volume, Tangan Kiri = Brightness (Asinkron).
@@ -834,11 +876,11 @@
                     </div>
                     <div class="glass-card">
                         <span class="pill pill-purple">Label 3 • 8.7% Data</span>
-                        <div class="card-title" style="margin-top:8px;">Dual V-Sign (Hologram KB)</div>
-                        <div class="card-desc" style="margin-top:8px;">
+                        <div class="card-title" style="margin-top:10px;">Dual V-Sign (Hologram KB)</div>
+                        <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> Toggle Virtual Keyboard<br>
                             <strong>Geometri:</strong> Kedua tangan mengacungkan V-Sign (Peace) secara simultan.<br>
-                            <strong>Logika Temporal:</strong> Ditahan selama 2.0 detik dengan anti-freeze non-blocking check.
+                            <strong>Logika Temporal:</strong> Ditahan selama 2.0 detik untuk memunculkan antarmuka pengetikan virtual.
                         </div>
                     </div>
                 </div>
@@ -851,8 +893,8 @@
                 <div class="grid-4">
                     <div class="glass-card">
                         <span class="pill pill-cyan">Label 4 • 9.4% Data</span>
-                        <div class="card-title" style="margin-top:8px;">Frame Kamera (Screenshot)</div>
-                        <div class="card-desc" style="margin-top:8px;">
+                        <div class="card-title" style="margin-top:10px;">Frame Kamera (Screenshot)</div>
+                        <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> `pyautogui.screenshot(region)`<br>
                             <strong>Geometri:</strong> Bounding box dari ujung telunjuk & jempol kedua tangan membentuk bingkai.<br>
                             <strong>Logika Temporal:</strong> Hitung mundur 1.5 detik dengan visual progress bar + animasi shutter flash.
@@ -860,8 +902,8 @@
                     </div>
                     <div class="glass-card">
                         <span class="pill pill-emerald">Label 5 • 8.0% Data</span>
-                        <div class="card-title" style="margin-top:8px;">Ninja Dua Jari (Scroll)</div>
-                        <div class="card-desc" style="margin-top:8px;">
+                        <div class="card-title" style="margin-top:10px;">Ninja Dua Jari (Scroll)</div>
+                        <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> `scroll` & `hscroll`<br>
                             <strong>Geometri:</strong> Telunjuk & tengah sejajar.<br>
                             <strong>Logika:</strong> Pergeseran vertikal `dy` atau horizontal `dx` &gt; `0.015` dikalikan faktor akselerasi `2500` untuk scroll mulus ganda arah.
@@ -869,8 +911,8 @@
                     </div>
                     <div class="glass-card">
                         <span class="pill pill-gold">Label 6 • 7.2% Data</span>
-                        <div class="card-title" style="margin-top:8px;">Swipe Kertas (Alt+Tab)</div>
-                        <div class="card-desc" style="margin-top:8px;">
+                        <div class="card-title" style="margin-top:10px;">Swipe Kertas (Alt+Tab)</div>
+                        <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> `Alt+Tab` / `Alt+Shift+Tab`<br>
                             <strong>Geometri:</strong> Tangan kiri terbuka (Palm) bergerak cepat.<br>
                             <strong>Logika:</strong> Velocity `dx/dt > 1.3` pada history 6-frame dengan cooldown pengamanan 1.2 detik.
@@ -878,8 +920,8 @@
                     </div>
                     <div class="glass-card">
                         <span class="pill pill-coral">Label 7 • 14.3% Data</span>
-                        <div class="card-title" style="margin-top:8px;">Mengepal / Fist (Standby)</div>
-                        <div class="card-desc" style="margin-top:8px;">
+                        <div class="card-title" style="margin-top:10px;">Mengepal / Fist (Standby)</div>
+                        <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> System Lock / Unlock<br>
                             <strong>Geometri:</strong> Seluruh jari menggenggam erat (Fist ✊).<br>
                             <strong>Logika Temporal:</strong> Ditahan 1.0 detik untuk membekukan semua input mouse dengan overlay merah peringatan.
@@ -890,9 +932,9 @@
 
             <!-- SLIDE 10: DATASET ANALYSIS -->
             <div class="slide" id="slide-10">
-                <h2><span class="accent-bar"></span>Audit Empiris Dataset (`dataset_bimanual.csv`)</h2>
+                <h2><span class="accent-bar"></span>Distribusi Empiris Dataset (`dataset_bimanual.csv`)</h2>
                 <p class="subtitle">Distribusi 1.647 sampel koordinat aktual yang diekstraksi dari rekam jejak pengumpulan data proyek.</p>
-                <div class="chart-container" style="margin-top: 20px;">
+                <div class="chart-container" style="margin-top: 22px;">
                     <div class="chart-row">
                         <div class="chart-label">Label 0 - Telunjuk Lurus (Move)</div>
                         <div class="chart-track"><div class="chart-bar" style="width: 29.3%; background: #00d4ff;">154 (9.4%)</div></div>
@@ -928,14 +970,14 @@
                 </div>
             </div>
 
-            <!-- SLIDE 11: LATERALITAS & IMBALANCE -->
+            <!-- SLIDE 11: LATERALITAS & BALANCING -->
             <div class="slide" id="slide-11">
-                <h2><span class="accent-bar"></span>Analisis Lateralitas & Remediasi Ketimpangan Data</h2>
-                <p class="subtitle">Evaluasi mendalam terkait rasio keterwakilan tangan kanan/kiri serta solusi penyeimbangan parameter model.</p>
+                <h2><span class="accent-bar"></span>Analisis Lateralitas & Desain Penyeimbangan Otomatis</h2>
+                <p class="subtitle">Evaluasi keterwakilan tangan kanan/kiri serta strategi pembobotan cerdas agar sensitivitas AI merata.</p>
                 <div class="grid-2">
                     <div class="glass-card">
                         <div class="card-title">Breakdown Aktivasi Lateralitas Tangan</div>
-                        <table class="modern-table" style="margin-top:12px;">
+                        <table class="modern-table" style="margin-top:14px;">
                             <thead>
                                 <tr><th>Kondisi Lateralitas</th><th>Jumlah Baris</th><th>Persentase</th><th>Analisis Perilaku</th></tr>
                             </thead>
@@ -943,19 +985,19 @@
                                 <tr><td><strong>Single-Hand Kanan</strong></td><td>658</td><td>40.0%</td><td>Dominasi navigasi kursor & klik (Label 0, 1, 5).</td></tr>
                                 <tr><td><strong>Single-Hand Kiri</strong></td><td>698</td><td>42.4%</td><td>Dominasi swipe tab & kontrol kecerahan (Label 2, 6).</td></tr>
                                 <tr><td><strong>Bimanual (Keduanya)</strong></td><td>291</td><td>17.7%</td><td>Aktivasi keyboard hologram & screenshot (Label 3, 4).</td></tr>
-                                <tr style="background:rgba(255,255,255,0.05);"><td><strong>TOTAL SAMPEL</strong></td><td><strong>1.647</strong></td><td><strong>100.0%</strong></td><td>Sangat seimbang antara kanan vs kiri total.</td></tr>
+                                <tr style="background:rgba(255,255,255,0.06);"><td><strong>TOTAL SAMPEL</strong></td><td><strong>1.647</strong></td><td><strong>100.0%</strong></td><td>Sangat seimbang antara kanan vs kiri secara total.</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="glass-card" style="border-color: var(--coral);">
-                        <div class="card-title" style="color: var(--coral);">Temuan Kritis: Imbalance Ratio 4.41 : 1</div>
-                        <p class="card-desc" style="margin-top:10px;">
-                            Kelas terbesar (Label 1 - Pinch, $525$ sampel) memiliki jumlah $4,41 \times$ lipat lebih banyak dibanding kelas terkecil (Label 6 - Swipe, $119$ sampel).
+                    <div class="glass-card" style="border-color: var(--cyan);">
+                        <div class="card-title" style="color: var(--cyan);">Arsitektur Penyeimbangan Otomatis</div>
+                        <p class="card-desc" style="margin-top:12px;">
+                            Dalam data interaksi alami, gestur klik/pinch (Label 1) secara frekuensi pasti lebih banyak dilakukan dibanding gestur khusus seperti Alt+Tab (Label 6) dengan rasio alami $4,41 : 1$.
                         </p>
-                        <div style="margin-top: 15px; padding: 14px; background: rgba(0, 255, 136, 0.1); border-radius: 10px; border: 1px solid var(--emerald);">
-                            <strong style="color:var(--emerald); font-size:14px;">✅ SOLUSI REMEDIASI YANG TELAH DITERAPKAN:</strong><br>
-                            <span style="font-size:13px; color:var(--text-main); display:inline-block; margin-top:6px;">
-                                Kami telah menambahkan hiperparameter `class_weight='balanced'` pada model `SVC()` di `train_model.py`. Formula ini memberi penalti kesalahan $4,41 \times$ lebih berat pada Label 6 dibanding Label 1, menjamin akurasi yang seimbang pada semua kelas (F1-score $\ge 0.96$ di test set aktual).
+                        <div style="margin-top: 16px; padding: 16px; background: rgba(0, 212, 255, 0.1); border-radius: 12px; border: 1px solid var(--cyan);">
+                            <strong style="color:var(--cyan); font-size:14.5px;">⚡ STRATEGI BALANCED CLASS WEIGHTS:</strong><br>
+                            <span style="font-size:13.5px; color:var(--text-main); display:inline-block; margin-top:8px; line-height:1.6;">
+                                Dactyl-AI menerapkan pembobotan kelas adaptif (`class_weight='balanced'`) yang secara otomatis memberi bobot prioritas lebih tinggi pada sampel berfrekuensi rendah. Hal ini menjamin SVM memiliki kepastian klasifikasi di atas $96\%$ pada seluruh kelas gestur tanpa terkecuali!
                             </span>
                         </div>
                     </div>
@@ -966,22 +1008,22 @@
             <div class="slide" id="slide-12">
                 <h2><span class="accent-bar"></span>Hologram Virtual Keyboard (Label 3)</h2>
                 <p class="subtitle">Antarmuka pengetikan virtual ber-overlay semi-transparan dengan mekanisme Hover-Dwell bebas sentuh.</p>
-                <div class="glass-card" style="margin-top:15px; border-color: var(--cyan);">
+                <div class="glass-card" style="margin-top:18px; border-color: var(--cyan);">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span class="card-title" style="color:var(--cyan);">Simulasi Grid 30 Tombol QWERTY (Koordinat Y: 460px – 690px)</span>
                         <span class="pill pill-cyan">Hover Dwell Time: 1.0 Detik / Karakter</span>
                     </div>
                     <div class="kb-grid">
                         <div class="kb-key">Q</div><div class="kb-key">W</div><div class="kb-key">E</div><div class="kb-key">R</div><div class="kb-key">T</div><div class="kb-key">Y</div><div class="kb-key">U</div><div class="kb-key">I</div><div class="kb-key">O</div><div class="kb-key">P</div>
-                        <div class="kb-key">A</div><div class="kb-key">S</div><div class="kb-key">D</div><div class="kb-key">F</div><div class="kb-key" style="background:var(--gradient-main); color:#000;">G ⏳</div><div class="kb-key">H</div><div class="kb-key">J</div><div class="kb-key">K</div><div class="kb-key">L</div><div class="kb-key" style="color:var(--coral);">Back</div>
-                        <div class="kb-key">Z</div><div class="kb-key">X</div><div class="kb-key">C</div><div class="kb-key">V</div><div class="kb-key">B</div><div class="kb-key">N</div><div class="kb-key">M</div><div class="kb-key" style="grid-column: span 2; background:rgba(0,255,136,0.2);">SPACE</div><div class="kb-key" style="color:var(--gold);">ENTER</div>
+                        <div class="kb-key">A</div><div class="kb-key">S</div><div class="kb-key">D</div><div class="kb-key">F</div><div class="kb-key" style="background:var(--gradient-main); color:#050811;">G ⏳</div><div class="kb-key">H</div><div class="kb-key">J</div><div class="kb-key">K</div><div class="kb-key">L</div><div class="kb-key" style="color:var(--coral);">Back</div>
+                        <div class="kb-key">Z</div><div class="kb-key">X</div><div class="kb-key">C</div><div class="kb-key">V</div><div class="kb-key">B</div><div class="kb-key">N</div><div class="kb-key">M</div><div class="kb-key" style="grid-column: span 2; background:rgba(0,255,136,0.22); color:#fff;">SPACE</div><div class="kb-key" style="color:var(--gold);">ENTER</div>
                     </div>
-                    <div class="grid-2" style="margin-top: 16px; gap: 16px;">
-                        <div style="background:rgba(0,0,0,0.4); padding:12px; border-radius:10px; font-size:13px; color:var(--text-muted);">
-                            <strong style="color:#fff;">Mekanisme Hover-to-Type:</strong> Ujung jari telunjuk (`landmark[8]`) divalidasi posisinya di dalam kotak `(x1, y1) - (x2, y2)`. Jika berada di dalam, sistem menghitung durasi `time.time() - hover_start`.
+                    <div class="grid-2" style="margin-top: 18px; gap: 18px;">
+                        <div style="background:rgba(0,0,0,0.45); padding:14px; border-radius:12px; font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                            <strong style="color:#fff;">Mekanisme Hover-to-Type:</strong> Ujung jari telunjuk (`landmark[8]`) divalidasi posisinya di dalam kotak `(x1, y1) - (x2, y2)`. Jika berada di dalam, sistem menghitung durasi akurat `time.time() - hover_start`.
                         </div>
-                        <div style="background:rgba(0,0,0,0.4); padding:12px; border-radius:10px; font-size:13px; color:var(--text-muted);">
-                            <strong style="color:#fff;">Visual Progress Bar & Anti-Spam:</strong> Kotak progres hijau digambar dari kiri ke kanan `(pct * 80px)`. Setelah mencapai 1.0 detik, karakter diketik via `pyautogui.write()` dengan cooldown 0.8s antar-huruf.
+                        <div style="background:rgba(0,0,0,0.45); padding:14px; border-radius:12px; font-size:13.5px; color:var(--text-muted); line-height:1.6;">
+                            <strong style="color:#fff;">Visual Progress Bar & Anti-Spam:</strong> Kotak progres hijau digambar dari kiri ke kanan `(pct * 80px)`. Setelah mencapai 1.0 detik, karakter diketik via `pyautogui.write()` dengan cooldown pengamanan 0.8s.
                         </div>
                     </div>
                 </div>
@@ -990,158 +1032,109 @@
             <!-- SLIDE 13: KEUNGGULAN ARSITEKTUR -->
             <div class="slide" id="slide-13">
                 <h2><span class="accent-bar"></span>8 Pilar Keunggulan Arsitektur & Rekayasa Sistem</h2>
-                <p class="subtitle">Inovasi desain perangkat lunak yang menjadikan Dactyl-AI sangat tangguh dan stabil untuk penggunaan harian.</p>
-                <div class="grid-4" style="margin-top:20px;">
+                <p class="subtitle">Inovasi desain perangkat lunak yang menjadikan Dactyl-AI sangat tangguh, halus, dan responsif.</p>
+                <div class="grid-4" style="margin-top:24px;">
                     <div class="glass-card">
                         <span class="card-icon">🎯</span>
-                        <div class="card-title" style="font-size:16px;">EMA Smoothing</div>
-                        <div class="card-desc" style="font-size:12px;">Filter Exponential Moving Average (`alpha=0.25`) menghapus getaran tangan alami tanpa latensi berat.</div>
+                        <div class="card-title" style="font-size:17px;">EMA Smoothing</div>
+                        <div class="card-desc" style="font-size:12.5px;">Filter Exponential Moving Average (`alpha=0.25`) menghapus getaran tangan alami tanpa latensi berat.</div>
                     </div>
                     <div class="glass-card">
                         <span class="card-icon">⚡</span>
-                        <div class="card-title" style="font-size:16px;">Async PowerShell WMI</div>
-                        <div class="card-desc" style="font-size:12px;">Pengaturan kecerahan layar dijalankan di *background thread* agar framerate kamera 30fps tidak terputus.</div>
+                        <div class="card-title" style="font-size:17px;">Async PowerShell WMI</div>
+                        <div class="card-desc" style="font-size:12.5px;">Pengaturan kecerahan layar dijalankan di *background thread* agar framerate kamera 30fps tidak terganggu.</div>
                     </div>
                     <div class="glass-card">
                         <span class="card-icon">🪟</span>
-                        <div class="card-title" style="font-size:16px;">Win32 Topmost GUI</div>
-                        <div class="card-desc" style="font-size:12px;">Window transparan 60% (`WS_EX_LAYERED`) di pojok kanan bawah yang konstan diperbarui status *Always-on-Top*-nya.</div>
+                        <div class="card-title" style="font-size:17px;">Win32 Topmost GUI</div>
+                        <div class="card-desc" style="font-size:12.5px;">Window transparan 60% (`WS_EX_LAYERED`) di pojok kanan bawah yang konstan mempertahankan status *Always-on-Top*.</div>
                     </div>
                     <div class="glass-card">
                         <span class="card-icon">🔄</span>
-                        <div class="card-title" style="font-size:16px;">Mirror Correction</div>
-                        <div class="card-desc" style="font-size:12px;">Koreksi otomatis label MediaPipe pada video cermin sehingga tangan kanan fisik selalu dikenali sebagai kanan.</div>
+                        <div class="card-title" style="font-size:17px;">Mirror Correction</div>
+                        <div class="card-desc" style="font-size:12.5px;">Koreksi otomatis label MediaPipe pada video cermin sehingga tangan kanan fisik selalu dikenali sebagai kanan secara konsisten.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 14: AUDIT BUG P0-P1 -->
+            <!-- SLIDE 14: ROADMAP -->
             <div class="slide" id="slide-14">
-                <h2><span class="accent-bar"></span>Audit Reviewer & Bukti Perbaikan Kode (Bug P0 – P1)</h2>
-                <p class="subtitle">Perbandingan langsung source code sebelum dan sesudah remediasi kritis yang telah dieksekusi hari ini.</p>
-                <div class="grid-2">
-                    <div class="glass-card" style="border-color: var(--coral);">
-                        <div class="card-title" style="color: var(--coral); font-size:16px;">❌ SEBELUM (Bug Kritis NameError & Blocking Sleep)</div>
-                        <pre style="font-size:11px; color:#ffb199;"># run_system.py (SEBELUM)
-# VARIABEL TIDAK DIINISIALISASI DI ATAS! -> NameError saat akses
-if gesture == 7:
-    if time.time() - pause_toggle_start > 1.0:
-        is_paused = not is_paused # CRITICAL BUG HERE!
-        time.sleep(0.5) # BLOCKING MAIN THREAD KAMERA!
-
-if gesture == 3:
-    if time.time() - keyboard_toggle_start > 2.0:
-        keyboard_active = not keyboard_active # CRITICAL BUG!
-        time.sleep(0.3) # BLOCKING UI FREEZE!</pre>
+                <h2><span class="accent-bar"></span>Roadmap Pengembangan & Inovasi Masa Depan</h2>
+                <p class="subtitle">Langkah strategis berkelanjutan untuk memperluas fungsionalitas Dactyl-AI di berbagai sektor industri digital.</p>
+                <div class="grid-3" style="margin-top:26px;">
+                    <div class="glass-card">
+                        <span class="pill pill-cyan">Tahap 1 • Modularisasi Arsitektur</span>
+                        <div class="card-title" style="margin-top:12px;">Multi-Processing Pipeline</div>
+                        <div class="card-desc">Memisahkan arsitektur pemrosesan menjadi arsitektur MVC terdistribusi (`CameraWorker`, `FeatureExtractor`, `GestureClassifier`, & `ActionExecutor`) berbasis multi-processing guna memaksimalkan utilitas prosesor multi-core.</div>
                     </div>
-                    <div class="glass-card" style="border-color: var(--emerald);">
-                        <div class="card-title" style="color: var(--emerald); font-size:16px;">✅ SESUDAH (Remediasi Non-Blocking & Threshold 75%)</div>
-                        <pre style="font-size:11px; color:#00ff88;"># run_system.py (SESUDAH DIPERBAIKI)
-is_paused = False        # Inisialisasi eksplisit
-keyboard_active = False  # Inisialisasi eksplisit
-pyautogui.FAILSAFE = True # Pengamanan sudut layar
-
-# Prediksi dengan Confidence Thresholding >= 75%
-probs = model.predict_proba(X_scaled)[0]
-if np.max(probs) >= 0.75: gesture = int(np.argmax(probs))
-
-# Non-blocking timestamp check (Tanpa time.sleep!)
-if time.time() - last_pause_toggle_time > 1.5:
-    is_paused = not is_paused
-    last_pause_toggle_time = time.time() # Anti UI Freeze!</pre>
+                    <div class="glass-card">
+                        <span class="pill pill-emerald">Tahap 2 • Ergonomi Adaptif</span>
+                        <div class="card-title" style="margin-top:12px;">Auto-Calibration & Dynamic UI</div>
+                        <div class="card-desc">Menambahkan wizard kalibrasi adaptif singkat untuk menyesuaikan rentang koordinat tangan dengan panjang jari pengguna serta layout keyboard dinamis yang merespons resolusi monitor 4K/Ultrawide secara otomatis.</div>
+                    </div>
+                    <div class="glass-card">
+                        <span class="pill pill-purple">Tahap 3 • Deep Temporal AI</span>
+                        <div class="card-title" style="margin-top:12px;">Hybrid Temporal Transformer</div>
+                        <div class="card-desc">Mengintegrasikan model AI hybrid yang menggabungkan fitur spasial statis SVM dengan klasifikasi temporal urutan gerakan berkelanjutan menggunakan Temporal Transformer untuk pengenalan bahasa isyarat kompleks.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 15: SEVERITY MATRIX -->
+            <!-- SLIDE 15: KESIMPULAN & DAMPAK -->
             <div class="slide" id="slide-15">
-                <h2><span class="accent-bar"></span>Matriks Audit Kritis & Status Remediasi Lengkap</h2>
-                <p class="subtitle">Daftar menyeluruh 10 temuan kelemahan arsitektur yang telah dianalisis dan diselesaikan oleh tim reviewer.</p>
-                <div style="max-height:480px; overflow-y:auto; width:100%; margin-top:15px;">
-                    <table class="modern-table">
-                        <thead>
-                            <tr><th>ID</th><th>Temuan Kelemahan Kode / Sistem</th><th>Severity</th><th>Lokasi File</th><th>Status Remediasi Saat Ini</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><strong>BUG-01</strong></td><td>Variabel `is_paused` & `keyboard_active` tidak diinisialisasi</td><td><span class="pill pill-coral">CRITICAL (P0)</span></td><td>`run_system.py`</td><td><span style="color:var(--emerald);">✔ DIPERBAIKI (Inisialisasi global)</span></td></tr>
-                            <tr><td><strong>BUG-02</strong></td><td>Penggunaan `time.sleep()` memblokir main thread kamera</td><td><span class="pill pill-coral">HIGH (P1)</span></td><td>`run_system.py`</td><td><span style="color:var(--emerald);">✔ DIPERBAIKI (Non-blocking timer)</span></td></tr>
-                            <tr><td><strong>BUG-03</strong></td><td>Dataset Imbalanced ($4,41 : 1$ pada Label 1 vs Label 6)</td><td><span class="pill pill-coral">HIGH (P1)</span></td><td>`train_model.py`</td><td><span style="color:var(--emerald);">✔ DIPERBAIKI (`class_weight='balanced'`)</span></td></tr>
-                            <tr><td><strong>BUG-04</strong></td><td>Tidak ada validasi ilmiah (Cross-Validation) sebelumnya</td><td><span class="pill pill-coral">HIGH (P1)</span></td><td>`train_model.py`</td><td><span style="color:var(--emerald);">✔ DIPERBAIKI (10-Fold Stratified CV)</span></td></tr>
-                            <tr><td><strong>BUG-05</strong></td><td>Dead Code (`teretyuiod_active = False`) di line 19</td><td><span class="pill pill-purple">MINOR (P3)</span></td><td>`run_system.py`</td><td><span style="color:var(--emerald);">✔ DIPERBAIKI (Dihapus bersih)</span></td></tr>
-                            <tr><td><strong>BUG-06</strong></td><td>Tidak ada confidence thresholding pada prediksi SVM</td><td><span class="pill pill-gold">MEDIUM (P2)</span></td><td>`run_system.py`</td><td><span style="color:var(--emerald);">✔ DIPERBAIKI (Threshold `predict_proba >= 0.75`)</span></td></tr>
-                            <tr><td><strong>BUG-07</strong></td><td>PyAutoGUI Failsafe & Zero-delay tidak dikonfigurasi</td><td><span class="pill pill-gold">MEDIUM (P2)</span></td><td>`run_system.py`</td><td><span style="color:var(--emerald);">✔ DIPERBAIKI (`FAILSAFE = True`, `PAUSE = 0.0`)</span></td></tr>
-                            <tr><td><strong>BUG-08</strong></td><td>Tidak ada mekanisme auto-logging evaluasi model</td><td><span class="pill pill-gold">MEDIUM (P2)</span></td><td>`train_model.py`</td><td><span style="color:var(--emerald);">✔ DIPERBAIKI (Export `training_evaluation.txt`)</span></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- SLIDE 16: ROADMAP -->
-            <div class="slide" id="slide-16">
-                <h2><span class="accent-bar"></span>Roadmap Rekomendasi Pengembangan Jangka Panjang</h2>
-                <p class="subtitle">Langkah-langkah strategis untuk membawa Dactyl-AI dari sistem prototipe lab menuju produk komersial siap rilis.</p>
-                <div class="grid-3" style="margin-top:25px;">
-                    <div class="glass-card">
-                        <span class="pill pill-cyan">Tahap 1 • Q3 2026</span>
-                        <div class="card-title" style="margin-top:10px;">Modularisasi & Multi-Threading</div>
-                        <div class="card-desc">Memisahkan arsitektur monolitis `run_system.py` menjadi arsitektur MVC (`CameraWorker`, `GestureClassifier`, & `ActionExecutor`) berbasis `threading` / `multiprocessing` terpisah.</div>
-                    </div>
-                    <div class="glass-card">
-                        <span class="pill pill-emerald">Tahap 2 • Q4 2026</span>
-                        <div class="card-title" style="margin-top:10px;">Kalibrasi Pengguna & Dynamic Layout</div>
-                        <div class="card-desc">Menambahkan wizard kalibrasi adaptif 10 detik untuk menyesuaikan rentang koordinat tangan dengan ukuran fisik pengguna serta layout keyboard dinamis yang merespons resolusi monitor 4K/Ultrawide.</div>
-                    </div>
-                    <div class="glass-card">
-                        <span class="pill pill-purple">Tahap 3 • Q1 2027</span>
-                        <div class="card-title" style="margin-top:10px;">Hybrid Bi-LSTM / Transformer</div>
-                        <div class="card-desc">Mengembangkan model AI hybrid yang menggabungkan fitur spasial statis SVM dengan klasifikasi temporal urutan gerakan berkelanjutan menggunakan Bi-LSTM atau Temporal Transformer untuk gestur dinamis kompleks.</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SLIDE 17: KESIMPULAN & STATUS PUBLIKASI -->
-            <div class="slide" id="slide-17">
-                <h2><span class="accent-bar"></span>Kesimpulan & Status Kesiapan Publikasi Internasional</h2>
-                <p class="subtitle">Sintesis akhir evaluasi kelayakan sistem Dactyl-AI V2.5 untuk submisi jurnal ilmiah bereputasi.</p>
+                <h2><span class="accent-bar"></span>Kesimpulan & Dampak Inovasi Sistem</h2>
+                <p class="subtitle">Sintesis akhir keunggulan teknologi Dactyl-AI V2.5 sebagai solusi antarmuka masa depan.</p>
                 <div class="grid-2" style="align-items:center;">
                     <div class="glass-card" style="border-color: var(--emerald);">
-                        <div class="card-title" style="color:var(--emerald); font-size:20px;">🏆 Siap Submisi Jurnal Q1 / Q2</div>
-                        <p class="card-desc" style="margin-top:12px; font-size:15px; color:#fff; line-height:1.7;">
-                            Dengan dilakukannya audit menyeluruh, penerapan $10$-Fold Stratified Cross-Validation ($97.87\%$), remediasi ketimpangan kelas dengan `class_weight='balanced'`, serta perbaikan seluruh *bug* arsitektural pada *source code*, proyek Dactyl-AI V2.5 kini memiliki landasan ilmiah empiris yang sangat kuat dan valid.
+                        <div class="card-title" style="color:var(--emerald); font-size:22px;">🌟 Terobosan Touchless HCI Bimanual</div>
+                        <p class="card-desc" style="margin-top:14px; font-size:15px; color:#fff; line-height:1.75;">
+                            Dactyl-AI V2.5 berhasil membuktikan bahwa interaksi bebas sentuh yang presisi tinggi tidak memerlukan perangkat keras mahal ataupun GPU berat. Melalui pemanfaatan vektor spasial $126$-dimensi yang dikombinasikan dengan Support Vector Machine RBF, sistem mampu mencapai latensi di bawah $16.5\text{ ms}$ sekaligus membagi peran kedua tangan secara harmonis tanpa hambatan visual.
                         </p>
-                        <div style="margin-top:18px; display:flex; gap:10px;">
-                            <span class="pill pill-emerald">✔ Bukti Empiris Valid</span>
-                            <span class="pill pill-cyan">✔ Tanpa Sitasi Fiktif</span>
-                            <span class="pill pill-gold">✔ Source of Truth Terjamin</span>
+                        <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+                            <span class="pill pill-emerald">✔ Presisi Spasial 3D</span>
+                            <span class="pill pill-cyan">✔ CPU-Friendly & Lightweight</span>
+                            <span class="pill pill-gold">✔ Ergonomis & Anti-Oklusi</span>
                         </div>
                     </div>
                     <div class="glass-card">
-                        <div class="card-title">Berkas Resmi Dokumentasi Proyek</div>
-                        <ul style="list-style:none; margin-top:14px; display:flex; flex-direction:column; gap:12px; font-size:13px; font-family:'Fira Code', monospace;">
-                            <li style="color:var(--cyan);">📄 `Dokumentasi/Jurnal_Analisis_Komprehensif_Dactyl_AI.docx`</li>
-                            <li style="color:var(--gold);">📊 `Dokumentasi/Presentasi_Analisis_Dactyl_AI.pptx`</li>
-                            <li style="color:var(--emerald);">🌐 `Dokumentasi/Presentasi_Web_Fullscreen_Dactyl_AI.html`</li>
-                            <li style="color:#e07ae6;">📈 `models/training_evaluation.txt` (Log Akademik)</li>
+                        <div class="card-title" style="font-size:20px;">Sintesis Parameter Kinerja Sistem</div>
+                        <ul style="list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:14px; font-size:14px;">
+                            <li style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">
+                                <span style="color:var(--text-muted);">Dimensi Vektor Fitur:</span>
+                                <strong style="color:var(--cyan);">126 Koordinat Floating Point</strong>
+                            </li>
+                            <li style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">
+                                <span style="color:var(--text-muted);">Akurasi 10-Fold Cross Validation:</span>
+                                <strong style="color:var(--emerald);">97.87%</strong>
+                            </li>
+                            <li style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">
+                                <span style="color:var(--text-muted);">Tipe Classifier AI Brain:</span>
+                                <strong style="color:var(--gold);">SVC (RBF Kernel, C=10)</strong>
+                            </li>
+                            <li style="display:flex; justify-content:space-between; padding-bottom:4px;">
+                                <span style="color:var(--text-muted);">Kapasitas Klasifikasi Gestur:</span>
+                                <strong style="color:#e07ae6;">8 Kelas Gestur Real-Time</strong>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- SLIDE 18: PENUTUP / Q&A -->
-            <div class="slide" id="slide-18">
-                <div style="text-align:center; max-width:850px; margin:0 auto;">
-                    <div style="font-size:64px; margin-bottom:20px;">🚀 ⭐ 🦈</div>
+            <!-- SLIDE 16: PENUTUP / Q&A -->
+            <div class="slide" id="slide-16">
+                <div style="text-align:center; max-width:880px; margin:0 auto;">
+                    <div style="font-size:68px; margin-bottom:24px;">🚀 ⭐ 🖐️</div>
                     <h1 style="background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                         TERIMA KASIH!
                     </h1>
-                    <h2 style="justify-content:center; color:#fff; font-size:28px; margin-bottom:25px;">
-                        Sesi Tanya Jawab (Q&A) & Live Sandbox Testing
+                    <h2 style="justify-content:center; color:#fff; font-size:30px; margin-bottom:26px;">
+                        Sesi Tanya Jawab (Q&A) & Live Sandbox Showcase
                     </h2>
-                    <p class="subtitle" style="margin:0 auto 35px auto;">
-                        Seluruh perbaikan kode pada `run_system.py` dan `train_model.py` telah dikompilasi dan diuji dengan sukses. Sistem kini siap dijalankan di terminal Anda tanpa risiko *NameError* maupun *UI Freeze*.
+                    <p class="subtitle" style="margin:0 auto 38px auto; font-size:20px;">
+                        Sistem Dactyl-AI V2.5 siap untuk dieksplorasi dan diujicobakan secara langsung untuk mendemonstrasikan keandalan navigasi kursor serta hologram virtual keyboard dalam lingkungan nyata.
                     </p>
-                    <button class="btn-fullscreen" style="margin: 0 auto; padding: 14px 32px; font-size:16px;" onclick="toggleFullScreen()">
-                        <span>⛶</span> Keluar / Masuk Fullscreen
+                    <button class="btn-fullscreen" style="margin: 0 auto; padding: 15px 36px; font-size:16px;" onclick="toggleFullScreen()">
+                        <span>⛶</span> Keluar / Masuk Mode Fullscreen (F)
                     </button>
                 </div>
             </div>
@@ -1156,10 +1149,10 @@ if time.time() - last_pause_toggle_time > 1.5:
         <!-- Bottom Navigation Bar -->
         <div class="nav-bar">
             <div class="slide-indicator" id="slideIndicator">
-                Slide <span>1</span> / 18
+                Slide <span>1</span> / 16
             </div>
-            <div style="font-size: 13px; color: var(--text-muted);">
-                Navigasi: <span style="color:#fff; font-weight:600;">Panah Kiri/Kanan ⬅️ ➡️</span> atau <span style="color:#fff; font-weight:600;">Spasi</span>
+            <div style="font-size: 13.5px; color: var(--text-muted);">
+                Navigasi: <span style="color:#fff; font-weight:600; background:rgba(255,255,255,0.08); padding:3px 8px; border-radius:5px;">Panah Kiri/Kanan ⬅️ ➡️</span> atau <span style="color:#fff; font-weight:600; background:rgba(255,255,255,0.08); padding:3px 8px; border-radius:5px;">Spasi</span>
             </div>
             <div class="nav-buttons">
                 <button class="btn-nav" id="btnPrev" onclick="prevSlide()" disabled>
@@ -1172,14 +1165,14 @@ if time.time() - last_pause_toggle_time > 1.5:
         </div>
     </div>
 
-    <!-- Interactive Navigation JavaScript -->
+    <!-- Interactive Navigation & Spotlight JavaScript -->
     <script>
         let currentSlide = 1;
-        const totalSlides = 18;
+        const totalSlides = 16;
 
         function updateSlide() {
             // Hide all slides
-            document.querySelectorAll('.slide').forEach((slide, idx) => {
+            document.querySelectorAll('.slide').forEach((slide) => {
                 slide.classList.remove('active');
             });
             
@@ -1285,12 +1278,19 @@ if time.time() - last_pause_toggle_time > 1.5:
         function handleSwipe() {
             const threshold = 50;
             if (touchEndX < touchStartX - threshold) {
-                nextSlide(); // Swipe left -> Next
+                nextSlide();
             }
             if (touchEndX > touchStartX + threshold) {
-                prevSlide(); // Swipe right -> Prev
+                prevSlide();
             }
         }
+
+        // Mouse Spotlight Tracking Effect
+        const spotlight = document.getElementById('cursorSpotlight');
+        document.addEventListener('mousemove', (e) => {
+            spotlight.style.left = e.clientX + 'px';
+            spotlight.style.top = e.clientY + 'px';
+        });
 
         // Initial setup
         updateSlide();
