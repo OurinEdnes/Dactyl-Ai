@@ -6,7 +6,7 @@ import numpy as np
 import os
 import ctypes
 from ctypes import wintypes
-
+from ui_hud import DactylHUD
 
 # Setup MediaPipe Hands (Mendukung 2 tangan secara simultan)
 mp_hands = mp.solutions.hands
@@ -206,6 +206,7 @@ def display_and_check_exit(frame_to_show):
     return False
 
 print("[SYSTEM] Sistem Kursor Magic Bimanual Aktif! Tekan 'q' atau tombol X pada window untuk keluar.")
+hud = DactylHUD()
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -216,6 +217,9 @@ while cap.isOpened():
     h_cam, w_cam, _ = frame.shape
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = hands.process(rgb_frame)
+    
+    # Render Top HUD Header Bar Minimalis
+    hud.draw_top_bar(frame, None, is_paused, keyboard_active, w_cam)
 
     left_hand_coords = [0.0] * 63
     right_hand_coords = [0.0] * 63
@@ -260,6 +264,9 @@ while cap.isOpened():
         else:
             prediction = model.predict(X_scaled)
             gesture = int(prediction[0])
+            
+        # Update status bar dengan gesture real-time
+        hud.draw_top_bar(frame, gesture, is_paused, keyboard_active, w_cam)
 
     # ----------------- LOGIKA 4: LOCK / UNLOCK (PAUSE) -----------------
     # Menggunakan Non-blocking timer (tanpa time.sleep) untuk mencegah UI freeze
@@ -276,15 +283,7 @@ while cap.isOpened():
 
     # Jika mode PAUSE aktif, kunci seluruh gerakan dan gambar overlay khusus
     if is_paused:
-        # Overlay semi-transparan merah
-        overlay = frame.copy()
-        cv2.rectangle(overlay, (0, 0), (w_cam, h_cam), (0, 0, 150), -1)
-        cv2.addWeighted(overlay, 0.4, frame, 0.6, 0, frame)
-        
-        cv2.putText(frame, "✊ SYSTEM LOCKED / STANDBY ✊", (w_cam // 2 - 270, h_cam // 2 - 20),
-                    cv2.FONT_HERSHEY_DUPLEX, 1.2, (0, 255, 0), 3)
-        cv2.putText(frame, "Genggam tangan (fist ✊) selama 1.0 detik untuk UNLOCK", 
-                    (w_cam // 2 - 310, h_cam // 2 + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+        hud.draw_locked_screen(frame, w_cam, h_cam)
         
         # Reset state lainnya
         if is_dragging:
@@ -311,22 +310,6 @@ while cap.isOpened():
 
     # ----------------- JALANKAN LOGIKA SESUAI STATE AKTIF -----------------
     if keyboard_active:
-        # Tulis petunjuk di bagian atas
-        cv2.rectangle(frame, (0, 0), (w_cam, 70), (30, 20, 20), -1)
-        cv2.putText(frame, "⌨️ KEYBOARD HANTU AKTIF (Aksi Mouse Beku)", (20, 45), 
-                    cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
-        cv2.putText(frame, "Tahan Peace ganda 2 detik untuk keluar", (w_cam - 380, 45), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 1)
-
-        # Gambar Keyboard Virtual (Semi-transparan)
-        overlay = frame.copy()
-        for k in keyboard_keys:
-            cv2.rectangle(overlay, (k['x1'], k['y1']), (k['x2'], k['y2']), (80, 50, 50), -1)
-            cv2.rectangle(overlay, (k['x1'], k['y1']), (k['x2'], k['y2']), (150, 150, 150), 1)
-            cv2.putText(overlay, k['key'], (k['x1'] + 15, k['y1'] + 45), 
-                        cv2.FONT_HERSHEY_DUPLEX, 0.6, (0, 255, 0), 1)
-        cv2.addWeighted(overlay, 0.5, frame, 0.5, 0, frame)
-
         # Deteksi jari hover di tombol keyboard
         active_fingers = []
         if left_hand_active:
@@ -339,29 +322,16 @@ while cap.isOpened():
         for finger in active_fingers:
             fx = int(finger.x * w_cam)
             fy = int(finger.y * h_cam)
-            # Gambar visual penunjuk jari
-            cv2.circle(frame, (fx, fy), 12, (255, 100, 0), -1)
-            cv2.circle(frame, (fx, fy), 12, (255, 255, 255), 2)
+            cv2.circle(frame, (fx, fy), 10, hud.COLOR_CYAN, -1)
+            cv2.circle(frame, (fx, fy), 10, (255, 255, 255), 2)
 
             for k in keyboard_keys:
                 if k['x1'] <= fx <= k['x2'] and k['y1'] <= fy <= k['y2']:
                     current_hovered_keys.add(k['key'])
-                    
-                    # Highlight tombol yang sedang di-hover
-                    cv2.rectangle(frame, (k['x1'], k['y1']), (k['x2'], k['y2']), (255, 150, 0), -1)
-                    cv2.putText(frame, k['key'], (k['x1'] + 15, k['y1'] + 45), 
-                                cv2.FONT_HERSHEY_DUPLEX, 0.6, (0, 0, 0), 2)
-                    
                     if k['key'] not in hover_start:
                         hover_start[k['key']] = time.time()
                     else:
                         elapsed = time.time() - hover_start[k['key']]
-                        # Gambarkan bar progres pengisian
-                        progress_w = int((min(elapsed, 1.0) / 1.0) * 80)
-                        cv2.rectangle(frame, (k['x1'] + 10, k['y2'] - 10), 
-                                      (k['x1'] + 10 + progress_w, k['y2'] - 5), (0, 255, 0), -1)
-                        
-                        # Jika sudah ditahan selama 1 detik, ketik karakternya
                         if elapsed >= 1.0 and (time.time() - last_typed_time > 0.8):
                             char = k['key']
                             if char == 'Close':
@@ -376,7 +346,10 @@ while cap.isOpened():
                                 pyautogui.write(char.lower())
                             
                             last_typed_time = time.time()
-                            hover_start[char] = time.time() + 1.0 # Hindari spam beruntun
+                            hover_start[char] = time.time() + 1.0
+
+        # Render Hologram Keyboard Futuristik
+        hud.draw_virtual_keyboard(frame, keyboard_keys, hover_start, current_hovered_keys, w_cam, h_cam) # Hindari spam beruntun
 
         # Bersihkan tombol yang sudah tidak di-hover lagi
         for key_name in list(hover_start.keys()):
@@ -404,29 +377,10 @@ while cap.isOpened():
                 x_max = max(L_idx.x, L_thb.x, R_idx.x, R_thb.x)
                 y_max = max(L_idx.y, L_thb.y, R_idx.y, R_thb.y)
                 
-                # Koordinat kamera untuk overlay visual bingkai
-                x1_cam, y1_cam = int(x_min * w_cam), int(y_min * h_cam)
-                x2_cam, y2_cam = int(x_max * w_cam), int(y_max * h_cam)
+                # Render Viewfinder Screenshot Futuristic
+                hud.draw_screenshot_viewfinder(frame, int(x_min * w_cam), int(y_min * h_cam), int(x_max * w_cam), int(y_max * h_cam), time.time() - screenshot_start)
                 
-                # Menggambar bingkai kamera keren di monitor
-                cv2.rectangle(frame, (x1_cam, y1_cam), (x2_cam, y2_cam), (0, 255, 255), 2)
-                # Sudut siku-siku bingkai
-                size = 20
-                cv2.line(frame, (x1_cam, y1_cam), (x1_cam + size, y1_cam), (0, 255, 0), 4)
-                cv2.line(frame, (x1_cam, y1_cam), (x1_cam, y1_cam + size), (0, 255, 0), 4)
-                cv2.line(frame, (x2_cam, y1_cam), (x2_cam - size, y1_cam), (0, 255, 0), 4)
-                cv2.line(frame, (x2_cam, y1_cam), (x2_cam, y1_cam + size), (0, 255, 0), 4)
-                cv2.line(frame, (x1_cam, y2_cam), (x1_cam + size, y2_cam), (0, 255, 0), 4)
-                cv2.line(frame, (x1_cam, y2_cam), (x1_cam, y2_cam - size), (0, 255, 0), 4)
-                cv2.line(frame, (x2_cam, y2_cam), (x2_cam - size, y2_cam), (0, 255, 0), 4)
-                cv2.line(frame, (x2_cam, y2_cam), (x2_cam, y2_cam - size), (0, 255, 0), 4)
-                
-                # Progres bar hitung mundur di layar
-                elapsed = time.time() - screenshot_start
-                pct = min(elapsed / 1.5, 1.0)
-                cv2.rectangle(frame, (x1_cam, y1_cam - 15), (x1_cam + int(pct * (x2_cam - x1_cam)), y1_cam - 5), (0, 255, 0), -1)
-                
-                if elapsed >= 1.5:
+                if time.time() - screenshot_start >= 1.5:
                     scr_w, scr_h = pyautogui.size()
                     # Mapping koordinat ke resolusi layar monitor
                     x1_scr = int(x_min * scr_w)
@@ -512,7 +466,7 @@ while cap.isOpened():
             x_target = max(5, min(scr_w - 5, int(cursor_x * scr_w)))
             y_target = max(5, min(scr_h - 5, int(cursor_y * scr_h)))
             pyautogui.moveTo(x_target, y_target)
-            cv2.putText(frame, "🖱️ Move Mode (Label 0)", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
+            hud.draw_action_badge(frame, "MOVE CURSOR", "Label 0 Active • EMA Filtered", hud.COLOR_EMERALD)
 
         # Label 1: Aksi Klik Kiri, Klik Kanan, Double Klik, & Hold-Drag (dari prediksi PKL)
         # ATAU jika sedang tahan-seret (Hold-Drag) agar tidak putus saat fluktuasi frame AI
@@ -536,7 +490,7 @@ while cap.isOpened():
                     pyautogui.click(button='right')
                     last_click_time = now
                     last_click_type = 'right'
-                cv2.putText(frame, "🔥 RIGHT CLICK! (Label 1)", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0), 3)
+                hud.draw_action_badge(frame, "RIGHT CLICK!", "Label 1 Pinch Action", hud.COLOR_CORAL)
             
             # 2. Deteksi Cubit Kiri (Jempol + Telunjuk Kanan) untuk Klik Kiri / Double Klik / Drag
             elif dist_left < 0.055 and dist_left <= dist_right:
@@ -558,9 +512,9 @@ while cap.isOpened():
                 y_target = max(5, min(scr_h - 5, int(cursor_y * scr_h)))
                 pyautogui.moveTo(x_target, y_target)
                 if is_dragging:
-                    cv2.putText(frame, "✊ DRAG MODE (HOLD)", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
+                    hud.draw_action_badge(frame, "DRAG MODE (HOLD)", "Dragging Active • Release to Drop", hud.COLOR_GOLD)
                 else:
-                    cv2.putText(frame, "🤏 PINCH (CLICKING...)", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 255, 0), 2)
+                    hud.draw_action_badge(frame, "PINCH CLICKING...", "Label 1 Ready", hud.COLOR_CYAN)
             
             # 3. Cubitan Dilepas saat dalam mode Label 1
             else:
@@ -574,12 +528,12 @@ while cap.isOpened():
                             pyautogui.doubleClick()
                             last_click_time = now
                             last_click_type = 'double'
-                            cv2.putText(frame, "🔥🔥 DOUBLE CLICK!", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0), 3)
+                            hud.draw_action_badge(frame, "DOUBLE CLICK!", "Action Executed", hud.COLOR_EMERALD)
                         else:
                             pyautogui.click(button='left')
                             last_click_time = now
                             last_click_type = 'left'
-                            cv2.putText(frame, "🔥 LEFT CLICK!", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0), 3)
+                            hud.draw_action_badge(frame, "LEFT CLICK!", "Action Executed", hud.COLOR_CYAN)
                 pinch_start_time = None
                 
                 # Pindahkan kursor jika dilepas
@@ -591,7 +545,7 @@ while cap.isOpened():
                 x_target = max(5, min(scr_w - 5, int(cursor_x * scr_w)))
                 y_target = max(5, min(scr_h - 5, int(cursor_y * scr_h)))
                 pyautogui.moveTo(x_target, y_target)
-                cv2.putText(frame, "🤏 Click Mode Ready (Label 1)", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
+                hud.draw_action_badge(frame, "CLICK MODE READY", "Label 1 Active", hud.COLOR_CYAN)
         else:
             if is_dragging:
                 pyautogui.mouseUp()
@@ -622,7 +576,7 @@ while cap.isOpened():
                 else:
                     prev_scroll_y = curr_y
                     prev_scroll_x = curr_x
-                cv2.putText(frame, "🧭 Ninja Scroll", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
+                hud.draw_action_badge(frame, "NINJA SCROLL", "Label 5 Active • Smooth Vertical/Horizontal", hud.COLOR_PURPLE)
         else:
             prev_scroll_y = None
 
@@ -641,14 +595,10 @@ while cap.isOpened():
                         prev_scroll_x = curr_x
                 else:
                     prev_scroll_x = curr_x
-                cv2.putText(frame, "↔️ Horizontal Swipe / Scroll (Label 6)", (50, 50), cv2.FONT_HERSHEY_DUPLEX, 0.8, (0, 255, 0), 2)
+                hud.draw_action_badge(frame, "HORIZONTAL SWIPE", "Label 6 Active • Horizontal Navigation", hud.COLOR_GOLD)
         else:
             if gesture != 5:
                 prev_scroll_x = None
-
-    # Visualisasi Tambahan di Pojok Layar
-    cv2.putText(frame, f"AI Label: {gesture if gesture is not None else '-'}", (50, 100), 
-                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
     
     # Animasi Shutter Flash Kamera saat screenshot berhasil
     if flash_frames > 0:

@@ -398,7 +398,7 @@
             gap: 16px;
         }
         .chart-label {
-            width: 230px;
+            width: 245px;
             font-size: 13.5px;
             font-weight: 600;
             color: var(--text-main);
@@ -640,11 +640,11 @@
                     <div style="display: flex; gap: 18px; justify-content: center;">
                         <div class="glass-card" style="padding: 18px 30px; border-color: var(--cyan);">
                             <span style="font-size: 12.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px;">AKURASI 10-FOLD CV</span>
-                            <span style="font-size: 26px; font-weight: 900; color: var(--cyan); margin-top: 4px;">97.87% (+/- 1.36%)</span>
+                            <span style="font-size: 26px; font-weight: 900; color: var(--cyan); margin-top: 4px;">98.64% (+/- 0.56%)</span>
                         </div>
                         <div class="glass-card" style="padding: 18px 30px; border-color: var(--emerald);">
-                            <span style="font-size: 12.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px;">LATENSI REAL-TIME</span>
-                            <span style="font-size: 26px; font-weight: 900; color: var(--emerald); margin-top: 4px;">&lt; 16.5 ms / Frame</span>
+                            <span style="font-size: 12.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px;">AKURASI PENGUJIAN TEST SET</span>
+                            <span style="font-size: 26px; font-weight: 900; color: var(--emerald); margin-top: 4px;">99.10% (4.421 Sampel)</span>
                         </div>
                         <div class="glass-card" style="padding: 18px 30px; border-color: var(--purple);">
                             <span style="font-size: 12.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px;">PARADIGMA INTERAKSI</span>
@@ -675,12 +675,12 @@
                     <div class="glass-card" onclick="goToSlide(7)">
                         <span class="card-icon">🧠</span>
                         <div class="card-title">3. AI Brain & 8 Gestur</div>
-                        <div class="card-desc">Mekanisme Support Vector Machine RBF, pemetaan 126-dimensi vektor, dan spesifikasi 8 klasifikasi gestur.</div>
+                        <div class="card-desc">Mekanisme Support Vector Machine RBF, pemetaan 126-dimensi vektor, dan spesifikasi 8 klasifikasi gestur terbaru.</div>
                     </div>
                     <div class="glass-card" onclick="goToSlide(13)">
                         <span class="card-icon">⚡</span>
                         <div class="card-title">4. Rekayasa & Keunggulan</div>
-                        <div class="card-desc">Pilar keunggulan rekayasa sistem: EMA Cursor Smoothing, WMI Brightness Asinkron, dan GUI Topmost transparan.</div>
+                        <div class="card-desc">Pilar keunggulan rekayasa sistem: EMA Smoothing, Double Click, Horizontal Scroll, WMI Brightness Asinkron, & Topmost GUI.</div>
                     </div>
                 </div>
             </div>
@@ -724,13 +724,13 @@
                         <div class="card-title" style="color: var(--emerald);">🧠 Machine Learning & Data</div>
                         <ul style="list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: var(--text-muted);">
                             <li><strong style="color:#fff;">Scikit-Learn:</strong> Support Vector Classifier (`SVC kernel='rbf', C=10`), `StandardScaler`, & `StratifiedKFold`.</li>
-                            <li><strong style="color:#fff;">Pandas & NumPy:</strong> Pemrosesan matriks koordinat 126-dimensi berpresisi tinggi dari dataset.</li>
+                            <li><strong style="color:#fff;">Pandas & NumPy:</strong> Pemrosesan matriks koordinat 126-dimensi berpresisi tinggi dari 4.421 data pelatihan.</li>
                         </ul>
                     </div>
                     <div class="glass-card">
                         <div class="card-title" style="color: var(--gold);">⚙️ OS Automation & System API</div>
                         <ul style="list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: var(--text-muted);">
-                            <li><strong style="color:#fff;">PyAutoGUI:</strong> Navigasi kursor, klik kiri/kanan, drag, scroll berganda, hotkey Alt+Tab, dan penulisan teks.</li>
+                            <li><strong style="color:#fff;">PyAutoGUI:</strong> Navigasi kursor, klik kiri/kanan, double-click, drag, scroll vertikal & horizontal (`hscroll`), dan penulisan teks.</li>
                             <li><strong style="color:#fff;">Win32 API (`ctypes`):</strong> Manajemen window GUI topmost & transparansi 60% (`WS_EX_LAYERED`).</li>
                             <li><strong style="color:#fff;">PowerShell WMI Async:</strong> Kontrol kecerahan layar tanpa memblokir thread kamera utama.</li>
                         </ul>
@@ -770,7 +770,7 @@
                     <div class="flow-box">
                         <span class="card-icon">🖥️</span>
                         <div class="card-title" style="font-size: 16px;">5. Action Dispatcher</div>
-                        <div class="card-desc" style="font-size: 12.5px;">Eksekusi aksi OS: EMA Cursor Move, Click, Scroll, Screenshot, atau pemanggilan Hologram Keyboard.</div>
+                        <div class="card-desc" style="font-size: 12.5px;">Eksekusi aksi OS: EMA Move, Click/Double Click, Scroll Vert/Horiz, Screenshot, atau pemanggilan Hologram Keyboard.</div>
                     </div>
                 </div>
             </div>
@@ -788,9 +788,9 @@
                             </thead>
                             <tbody>
                                 <tr><td><strong style="color:var(--cyan);">0</strong></td><td>Wrist (Pergelangan)</td><td>Pusat kalkulasi rotasi kemiringan (`atan2`) untuk Volume & Brightness.</td></tr>
-                                <tr><td><strong style="color:var(--emerald);">4</strong></td><td>Thumb Tip (Ujung Jempol)</td><td>Komponen utama deteksi cubitan (`Pinch`) untuk Klik Kiri & Klik Kanan.</td></tr>
+                                <tr><td><strong style="color:var(--emerald);">4</strong></td><td>Thumb Tip (Ujung Jempol)</td><td>Komponen utama deteksi cubitan (`Pinch`) untuk Klik Kiri, Double Klik, & Klik Kanan.</td></tr>
                                 <tr><td><strong style="color:var(--gold);">8</strong></td><td>Index Tip (Ujung Telunjuk)</td><td>Target koordinat navigasi Kursor Mouse & penunjuk hover Keyboard.</td></tr>
-                                <tr><td><strong style="color:var(--coral);">9</strong></td><td>Middle MCP (Pangkal Tengah)</td><td>Titik referensi stabil untuk kalkulasi delta pergerakan Scroll Ninja.</td></tr>
+                                <tr><td><strong style="color:var(--coral);">9</strong></td><td>Middle MCP (Pangkal Tengah)</td><td>Titik referensi stabil untuk kalkulasi delta pergerakan Scroll Ninja & Horizontal Swipe.</td></tr>
                                 <tr><td><strong style="color:#e07ae6;">12</strong></td><td>Middle Tip (Ujung Tengah)</td><td>Pasangan cubitan jempol untuk memicu Klik Kanan (`Right Click`).</td></tr>
                             </tbody>
                         </table>
@@ -833,7 +833,7 @@
                             </thead>
                             <tbody>
                                 <tr><td><strong>Beban Komputasi</strong></td><td><span style="color:var(--emerald); font-weight:700;">Super Ringan (&lt; 2 ms di CPU)</span></td><td>Berat (Membutuhkan GPU Dedikasi)</td></tr>
-                                <tr><td><strong>Ukuran Model</strong></td><td><span style="color:var(--emerald); font-weight:700;">460 KB (RAM Footprint Minim)</span></td><td>25 MB - 150 MB+</td></tr>
+                                <tr><td><strong>Ukuran Model</strong></td><td><span style="color:var(--emerald); font-weight:700;">1.13 MB (RAM Footprint Minim)</span></td><td>25 MB - 150 MB+</td></tr>
                                 <tr><td><strong>Ketahanan Oklusi</strong></td><td><span style="color:var(--emerald); font-weight:700;">Tinggi (Landmark 3D terinferensi)</span></td><td>Rentan gagal jika jari tertutup</td></tr>
                                 <tr><td><strong>Stabilitas FPS</strong></td><td><span style="color:var(--emerald); font-weight:700;">Konstan 30+ FPS (Zero-Lag)</span></td><td>Fluktuatif tergantung GPU clock</td></tr>
                             </tbody>
@@ -845,10 +845,10 @@
             <!-- SLIDE 8: GESTUR 0-3 -->
             <div class="slide" id="slide-8">
                 <h2><span class="accent-bar"></span>Spesifikasi Klasifikasi Gestur (Label 0 – 3)</h2>
-                <p class="subtitle">Pemetaan logika aksi sistem operasi berbasis aturan untuk empat kelas gestur utama pertama.</p>
+                <p class="subtitle">Pemetaan logika aksi sistem operasi berbasis aturan untuk empat kelas gestur utama pertama (Diperbarui).</p>
                 <div class="grid-4">
                     <div class="glass-card">
-                        <span class="pill pill-cyan">Label 0 • 9.4% Data</span>
+                        <span class="pill pill-cyan">Label 0 • 19.4% Data</span>
                         <div class="card-title" style="margin-top:10px;">Telunjuk Lurus (Move)</div>
                         <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> `pyautogui.moveTo(x, y)`<br>
@@ -856,17 +856,17 @@
                             <strong>Filter:</strong> Exponential Moving Average (`alpha=0.25`) untuk menghapus getaran natural tangan.
                         </div>
                     </div>
-                    <div class="glass-card">
-                        <span class="pill pill-emerald">Label 1 • 31.9% Data</span>
-                        <div class="card-title" style="margin-top:10px;">Cubit / Pinch (Click & Drag)</div>
+                    <div class="glass-card" style="border-color: var(--emerald);">
+                        <span class="pill pill-emerald">Label 1 • 20.3% Data</span>
+                        <div class="card-title" style="margin-top:10px;">Cubit / Pinch (Clicking & Drag)</div>
                         <div class="card-desc" style="margin-top:10px;">
-                            <strong>Aksi OS:</strong> Click & Hold-Drag (`mouseDown`)<br>
-                            <strong>Geometri:</strong> Jarak 3D Jempol-Telunjuk &lt; `0.045`.<br>
-                            <strong>Logika Temporal:</strong> Dilepas &lt; 0.3s = Klik Kiri; Ditahan &gt; 0.3s = Drag Kursor; Cubit Jari Tengah = Klik Kanan.
+                            <strong>Aksi OS:</strong> Click, <span style="color:var(--emerald); font-weight:700;">Double Click</span>, & Hold-Drag<br>
+                            <strong>Geometri:</strong> Jarak 3D Jempol-Telunjuk &lt; `0.055`.<br>
+                            <strong>Logika Temporal:</strong> Dilepas &lt; 0.28s = Klik Kiri; <span style="color:var(--emerald);">Klik 2x cepat (< 0.65s) = Double Click</span>; Ditahan &gt; 0.28s = Drag Kursor; Cubit Jari Tengah = Klik Kanan.
                         </div>
                     </div>
                     <div class="glass-card">
-                        <span class="pill pill-gold">Label 2 • 11.2% Data</span>
+                        <span class="pill pill-gold">Label 2 • 14.0% Data</span>
                         <div class="card-title" style="margin-top:10px;">C-Shape (Volume & Brightness)</div>
                         <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> Volume Up/Down & WMI Brightness<br>
@@ -875,7 +875,7 @@
                         </div>
                     </div>
                     <div class="glass-card">
-                        <span class="pill pill-purple">Label 3 • 8.7% Data</span>
+                        <span class="pill pill-purple">Label 3 • 3.3% Data</span>
                         <div class="card-title" style="margin-top:10px;">Dual V-Sign (Hologram KB)</div>
                         <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> Toggle Virtual Keyboard<br>
@@ -889,10 +889,10 @@
             <!-- SLIDE 9: GESTUR 4-7 -->
             <div class="slide" id="slide-9">
                 <h2><span class="accent-bar"></span>Spesifikasi Klasifikasi Gestur (Label 4 – 7)</h2>
-                <p class="subtitle">Pemetaan logika navigasi tingkat lanjut, screenshot bimanual, dan mekanisme pengamanan sistem.</p>
+                <p class="subtitle">Pemetaan logika navigasi tingkat lanjut, screenshot bimanual, lateral scroll, dan pengamanan sistem (Diperbarui).</p>
                 <div class="grid-4">
                     <div class="glass-card">
-                        <span class="pill pill-cyan">Label 4 • 9.4% Data</span>
+                        <span class="pill pill-cyan">Label 4 • 3.5% Data</span>
                         <div class="card-title" style="margin-top:10px;">Frame Kamera (Screenshot)</div>
                         <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> `pyautogui.screenshot(region)`<br>
@@ -901,30 +901,30 @@
                         </div>
                     </div>
                     <div class="glass-card">
-                        <span class="pill pill-emerald">Label 5 • 8.0% Data</span>
-                        <div class="card-title" style="margin-top:10px;">Ninja Dua Jari (Scroll)</div>
+                        <span class="pill pill-emerald">Label 5 • 22.2% Data</span>
+                        <div class="card-title" style="margin-top:10px;">Ninja Dua Jari (Scroll Vert)</div>
                         <div class="card-desc" style="margin-top:10px;">
-                            <strong>Aksi OS:</strong> `scroll` & `hscroll`<br>
+                            <strong>Aksi OS:</strong> Vertical `scroll`<br>
                             <strong>Geometri:</strong> Telunjuk & tengah sejajar.<br>
-                            <strong>Logika:</strong> Pergeseran vertikal `dy` atau horizontal `dx` &gt; `0.015` dikalikan faktor akselerasi `2500` untuk scroll mulus ganda arah.
+                            <strong>Logika:</strong> Pergeseran vertikal `dy` atau horizontal `dx` &gt; `0.015` dikalikan faktor akselerasi `2500` untuk guliran dokumen mulus dan responsif.
                         </div>
                     </div>
-                    <div class="glass-card">
-                        <span class="pill pill-gold">Label 6 • 7.2% Data</span>
-                        <div class="card-title" style="margin-top:10px;">Swipe Kertas (Alt+Tab)</div>
+                    <div class="glass-card" style="border-color: var(--coral);">
+                        <span class="pill pill-coral">Label 6 • 8.2% Data</span>
+                        <div class="card-title" style="margin-top:10px;">Tangan Kertas (Horizontal Swipe)</div>
                         <div class="card-desc" style="margin-top:10px;">
-                            <strong>Aksi OS:</strong> `Alt+Tab` / `Alt+Shift+Tab`<br>
-                            <strong>Geometri:</strong> Tangan kiri terbuka (Palm) bergerak cepat.<br>
-                            <strong>Logika:</strong> Velocity `dx/dt > 1.3` pada history 6-frame dengan cooldown pengamanan 1.2 detik.
+                            <strong>Aksi OS:</strong> <span style="color:var(--coral); font-weight:700;">Horizontal Scroll (`hscroll`)</span><br>
+                            <strong>Geometri:</strong> Telapak tangan terbuka (Open Palm).<br>
+                            <strong>Logika Baru:</strong> Pergeseran horizontal `dx` pada landmark MCP `[9]` dikalikan faktor `3000` (`pyautogui.hscroll(dx*3000)`), memungkinkan geser ke kanan/kiri pada spreadsheet/timeline super mulus!
                         </div>
                     </div>
                     <div class="glass-card">
-                        <span class="pill pill-coral">Label 7 • 14.3% Data</span>
-                        <div class="card-title" style="margin-top:10px;">Mengepal / Fist (Standby)</div>
+                        <span class="pill pill-purple">Label 7 • 9.2% Data</span>
+                        <div class="card-title" style="margin-top:10px;">Mengepal / Fist (Standby Lock)</div>
                         <div class="card-desc" style="margin-top:10px;">
                             <strong>Aksi OS:</strong> System Lock / Unlock<br>
                             <strong>Geometri:</strong> Seluruh jari menggenggam erat (Fist ✊).<br>
-                            <strong>Logika Temporal:</strong> Ditahan 1.0 detik untuk membekukan semua input mouse dengan overlay merah peringatan.
+                            <strong>Logika Temporal:</strong> Ditahan 1.0 detik untuk membekukan semua input mouse dengan overlay merah peringatan non-blocking.
                         </div>
                     </div>
                 </div>
@@ -932,40 +932,40 @@
 
             <!-- SLIDE 10: DATASET ANALYSIS -->
             <div class="slide" id="slide-10">
-                <h2><span class="accent-bar"></span>Distribusi Empiris Dataset (`dataset_bimanual.csv`)</h2>
-                <p class="subtitle">Distribusi 1.647 sampel koordinat aktual yang diekstraksi dari rekam jejak pengumpulan data proyek.</p>
+                <h2><span class="accent-bar"></span>Distribusi Empiris Dataset Terbaru (`dataset_bimanual.csv`)</h2>
+                <p class="subtitle">Distribusi ekspansi 4.421 sampel koordinat aktual hasil pelatihan dan validasi ilmiah model SVM RBF.</p>
                 <div class="chart-container" style="margin-top: 22px;">
                     <div class="chart-row">
                         <div class="chart-label">Label 0 - Telunjuk Lurus (Move)</div>
-                        <div class="chart-track"><div class="chart-bar" style="width: 29.3%; background: #00d4ff;">154 (9.4%)</div></div>
+                        <div class="chart-track"><div class="chart-bar" style="width: 87.4%; background: #00d4ff;">857 (19.4%)</div></div>
                     </div>
                     <div class="chart-row">
-                        <div class="chart-label">Label 1 - Cubit / Pinch (Click/Drag)</div>
-                        <div class="chart-track"><div class="chart-bar" style="width: 100%; background: #00ff88;">525 (31.9% - Dominan)</div></div>
+                        <div class="chart-label">Label 1 - Cubit / Pinch (Clicking)</div>
+                        <div class="chart-track"><div class="chart-bar" style="width: 91.7%; background: #00ff88;">899 (20.3%)</div></div>
                     </div>
                     <div class="chart-row">
                         <div class="chart-label">Label 2 - C-Shape (Volume/Bright)</div>
-                        <div class="chart-track"><div class="chart-bar" style="width: 35.0%; background: #ffb800;">184 (11.2%)</div></div>
+                        <div class="chart-track"><div class="chart-bar" style="width: 63.0%; background: #ffb800;">617 (14.0%)</div></div>
                     </div>
                     <div class="chart-row">
                         <div class="chart-label">Label 3 - V-Sign (Hologram KB)</div>
-                        <div class="chart-track"><div class="chart-bar" style="width: 27.4%; background: #b224ef;">144 (8.7%)</div></div>
+                        <div class="chart-track"><div class="chart-bar" style="width: 14.7%; background: #b224ef;">144 (3.3%)</div></div>
                     </div>
                     <div class="chart-row">
                         <div class="chart-label">Label 4 - Frame Kamera (Screenshot)</div>
-                        <div class="chart-track"><div class="chart-bar" style="width: 29.3%; background: #00d4ff;">154 (9.4%)</div></div>
+                        <div class="chart-track"><div class="chart-bar" style="width: 15.7%; background: #00d4ff;">154 (3.5%)</div></div>
                     </div>
                     <div class="chart-row">
                         <div class="chart-label">Label 5 - Ninja Dua Jari (Scroll)</div>
-                        <div class="chart-track"><div class="chart-bar" style="width: 25.0%; background: #ff6b6b;">131 (8.0%)</div></div>
+                        <div class="chart-track"><div class="chart-bar" style="width: 100%; background: #ff6b6b;">980 (22.2% - Terbanyak)</div></div>
                     </div>
                     <div class="chart-row">
-                        <div class="chart-label">Label 6 - Swipe Kertas (Alt+Tab)</div>
-                        <div class="chart-track"><div class="chart-bar" style="width: 22.7%; background: #ff8e53;">119 (7.2% - Minoritas)</div></div>
+                        <div class="chart-label">Label 6 - Tangan Kertas (Horiz Swipe)</div>
+                        <div class="chart-track"><div class="chart-bar" style="width: 37.1%; background: #ff8e53;">364 (8.2%)</div></div>
                     </div>
                     <div class="chart-row">
                         <div class="chart-label">Label 7 - Mengepal / Fist (Standby)</div>
-                        <div class="chart-track"><div class="chart-bar" style="width: 45.0%; background: #e07ae6;">236 (14.3%)</div></div>
+                        <div class="chart-track"><div class="chart-bar" style="width: 41.4%; background: #e07ae6;">406 (9.2%)</div></div>
                     </div>
                 </div>
             </div>
@@ -973,31 +973,31 @@
             <!-- SLIDE 11: LATERALITAS & BALANCING -->
             <div class="slide" id="slide-11">
                 <h2><span class="accent-bar"></span>Analisis Lateralitas & Desain Penyeimbangan Otomatis</h2>
-                <p class="subtitle">Evaluasi keterwakilan tangan kanan/kiri serta strategi pembobotan cerdas agar sensitivitas AI merata.</p>
+                <p class="subtitle">Evaluasi keterwakilan tangan kanan/kiri pada 4.421 sampel serta strategi pembobotan cerdas agar sensitivitas AI merata.</p>
                 <div class="grid-2">
                     <div class="glass-card">
-                        <div class="card-title">Breakdown Aktivasi Lateralitas Tangan</div>
+                        <div class="card-title">Breakdown Aktivasi Lateralitas Tangan (4.421 Baris)</div>
                         <table class="modern-table" style="margin-top:14px;">
                             <thead>
                                 <tr><th>Kondisi Lateralitas</th><th>Jumlah Baris</th><th>Persentase</th><th>Analisis Perilaku</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td><strong>Single-Hand Kanan</strong></td><td>658</td><td>40.0%</td><td>Dominasi navigasi kursor & klik (Label 0, 1, 5).</td></tr>
-                                <tr><td><strong>Single-Hand Kiri</strong></td><td>698</td><td>42.4%</td><td>Dominasi swipe tab & kontrol kecerahan (Label 2, 6).</td></tr>
-                                <tr><td><strong>Bimanual (Keduanya)</strong></td><td>291</td><td>17.7%</td><td>Aktivasi keyboard hologram & screenshot (Label 3, 4).</td></tr>
-                                <tr style="background:rgba(255,255,255,0.06);"><td><strong>TOTAL SAMPEL</strong></td><td><strong>1.647</strong></td><td><strong>100.0%</strong></td><td>Sangat seimbang antara kanan vs kiri secara total.</td></tr>
+                                <tr><td><strong>Single-Hand Kanan</strong></td><td>2.581</td><td>58.4%</td><td>Dominasi navigasi kursor, klik, & scroll (Label 0, 1, 5).</td></tr>
+                                <tr><td><strong>Single-Hand Kiri</strong></td><td>1.543</td><td>34.9%</td><td>Aktivasi kontrol kecerahan & lateral scroll (Label 2, 6).</td></tr>
+                                <tr><td><strong>Bimanual (Keduanya)</strong></td><td>297</td><td>6.7%</td><td>Aktivasi keyboard hologram & screenshot (Label 3, 4).</td></tr>
+                                <tr style="background:rgba(255,255,255,0.06);"><td><strong>TOTAL SAMPEL</strong></td><td><strong>4.421</strong></td><td><strong>100.0%</strong></td><td>Sangat representatif untuk seluruh kombinasi tangan.</td></tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="glass-card" style="border-color: var(--cyan);">
-                        <div class="card-title" style="color: var(--cyan);">Arsitektur Penyeimbangan Otomatis</div>
+                        <div class="card-title" style="color: var(--cyan);">Arsitektur Penyeimbangan Otomatis (`balanced`)</div>
                         <p class="card-desc" style="margin-top:12px;">
-                            Dalam data interaksi alami, gestur klik/pinch (Label 1) secara frekuensi pasti lebih banyak dilakukan dibanding gestur khusus seperti Alt+Tab (Label 6) dengan rasio alami $4,41 : 1$.
+                            Dengan ekspansi dataset terbaru 4.421 sampel, gestur navigasi harian seperti Scroll (Label 5) dan Click (Label 1) mendominasi secara alami.
                         </p>
                         <div style="margin-top: 16px; padding: 16px; background: rgba(0, 212, 255, 0.1); border-radius: 12px; border: 1px solid var(--cyan);">
                             <strong style="color:var(--cyan); font-size:14.5px;">⚡ STRATEGI BALANCED CLASS WEIGHTS:</strong><br>
                             <span style="font-size:13.5px; color:var(--text-main); display:inline-block; margin-top:8px; line-height:1.6;">
-                                Dactyl-AI menerapkan pembobotan kelas adaptif (`class_weight='balanced'`) yang secara otomatis memberi bobot prioritas lebih tinggi pada sampel berfrekuensi rendah. Hal ini menjamin SVM memiliki kepastian klasifikasi di atas $96\%$ pada seluruh kelas gestur tanpa terkecuali!
+                                Dactyl-AI menerapkan pembobotan kelas adaptif (`class_weight='balanced'`) yang secara otomatis memberi bobot prioritas lebih tinggi pada sampel berfrekuensi khusus seperti Hologram KB dan Screenshot. Hasil uji 10-Fold CV membuktikan F1-score konsisten $\ge 0.96$ hingga $1.00$ pada setiap kelas gestur!
                             </span>
                         </div>
                     </div>
@@ -1041,8 +1041,8 @@
                     </div>
                     <div class="glass-card">
                         <span class="card-icon">⚡</span>
-                        <div class="card-title" style="font-size:17px;">Async PowerShell WMI</div>
-                        <div class="card-desc" style="font-size:12.5px;">Pengaturan kecerahan layar dijalankan di *background thread* agar framerate kamera 30fps tidak terganggu.</div>
+                        <div class="card-title" style="font-size:17px;">Double Click & Horiz Scroll</div>
+                        <div class="card-desc" style="font-size:12.5px;">Dukungan klik ganda cepat (&lt; 0.65s) dan geser horizontal lateral (`hscroll`) berpresisi tinggi.</div>
                     </div>
                     <div class="glass-card">
                         <span class="card-icon">🪟</span>
@@ -1088,7 +1088,7 @@
                     <div class="glass-card" style="border-color: var(--emerald);">
                         <div class="card-title" style="color:var(--emerald); font-size:22px;">🌟 Terobosan Touchless HCI Bimanual</div>
                         <p class="card-desc" style="margin-top:14px; font-size:15px; color:#fff; line-height:1.75;">
-                            Dactyl-AI V2.5 berhasil membuktikan bahwa interaksi bebas sentuh yang presisi tinggi tidak memerlukan perangkat keras mahal ataupun GPU berat. Melalui pemanfaatan vektor spasial $126$-dimensi yang dikombinasikan dengan Support Vector Machine RBF, sistem mampu mencapai latensi di bawah $16.5\text{ ms}$ sekaligus membagi peran kedua tangan secara harmonis tanpa hambatan visual.
+                            Dactyl-AI V2.5 berhasil membuktikan bahwa interaksi bebas sentuh yang presisi tinggi tidak memerlukan perangkat keras mahal ataupun GPU berat. Melalui pemanfaatan vektor spasial $126$-dimensi dari 4.421 sampel yang dikombinasikan dengan Support Vector Machine RBF, sistem mampu mencapai akurasi uji 99.10% dengan latensi di bawah $16.5\text{ ms}$!
                         </p>
                         <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
                             <span class="pill pill-emerald">✔ Presisi Spasial 3D</span>
@@ -1100,16 +1100,16 @@
                         <div class="card-title" style="font-size:20px;">Sintesis Parameter Kinerja Sistem</div>
                         <ul style="list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:14px; font-size:14px;">
                             <li style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">
-                                <span style="color:var(--text-muted);">Dimensi Vektor Fitur:</span>
-                                <strong style="color:var(--cyan);">126 Koordinat Floating Point</strong>
+                                <span style="color:var(--text-muted);">Total Sampel Dataset Aktual:</span>
+                                <strong style="color:var(--cyan);">4.421 Baris (126 Vektor Fitur)</strong>
                             </li>
                             <li style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">
                                 <span style="color:var(--text-muted);">Akurasi 10-Fold Cross Validation:</span>
-                                <strong style="color:var(--emerald);">97.87%</strong>
+                                <strong style="color:var(--emerald);">98.64% (+/- 0.56%)</strong>
                             </li>
                             <li style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">
-                                <span style="color:var(--text-muted);">Tipe Classifier AI Brain:</span>
-                                <strong style="color:var(--gold);">SVC (RBF Kernel, C=10)</strong>
+                                <span style="color:var(--text-muted);">Akurasi Pengujian Test Set:</span>
+                                <strong style="color:var(--gold);">99.10% (F1-Score 0.99)</strong>
                             </li>
                             <li style="display:flex; justify-content:space-between; padding-bottom:4px;">
                                 <span style="color:var(--text-muted);">Kapasitas Klasifikasi Gestur:</span>

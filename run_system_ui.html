@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DACTYL-AI V2.5 - Executive Control Dashboard & Magic Cursor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #050811;
+            --bg-card: rgba(16, 22, 42, 0.70);
+            --bg-card-hover: rgba(26, 36, 68, 0.88);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --border-glow: rgba(0, 212, 255, 0.55);
+            --text-main: #f0f4f8;
+            --text-muted: #94a3b8;
+            --cyan: #00d4ff;
+            --emerald: #00ff88;
+            --coral: #ff6b6b;
+            --purple: #b224ef;
+            --gold: #ffb800;
+            --gradient-main: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%);
+            --gradient-purple: linear-gradient(135deg, #b224ef 0%, #7579ff 100%);
+            --gradient-coral: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            --gradient-gold: linear-gradient(135deg, #ffb800 0%, #ff8000 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Ambient Background Aurora Mesh */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.28;
+            animation: floatOrb 22s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            top: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, #00d4ff 0%, transparent 70%);
+        }
+
+        .orb-2 {
+            bottom: -15%;
+            right: -10%;
+            width: 65vw;
+            height: 65vw;
+            background: radial-gradient(circle, #b224ef 0%, transparent 70%);
+            animation-delay: -8s;
+        }
+
+        .orb-3 {
+            top: 40%;
+            left: 35%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, #00ff88 0%, transparent 70%);
+            animation-delay: -15s;
+        }
+
+        @keyframes floatOrb {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(50px, -50px) scale(1.12);
+            }
+
+            100% {
+                transform: translate(-40px, 40px) scale(0.92);
+            }
+        }
+
+        /* App Container */
+        .app-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 2.5rem 3rem;
+        }
+
+        /* Top Header & Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 2rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-main);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #050811;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+        }
+
+        .brand-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-title span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1.25rem;
+            background: rgba(10, 15, 30, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--coral);
+            box-shadow: 0 0 12px var(--coral);
+            transition: all 0.3s ease;
+        }
+
+        .status-pill.active {
+            border-color: var(--emerald);
+            background: rgba(0, 255, 136, 0.08);
+        }
+
+        .status-pill.active .status-dot {
+            background: var(--emerald);
+            box-shadow: 0 0 15px var(--emerald);
+            animation: pulseDot 1.5s infinite;
+        }
+
+        @keyframes pulseDot {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 0.6;
+            }
+        }
+
+        /* Main Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 1100px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards Style */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.25rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.12);
+            color: var(--cyan);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        /* Power Launcher Section */
+        .power-controller {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .power-btn-wrapper {
+            position: relative;
+            margin-bottom: 2.25rem;
+        }
+
+        .power-btn {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #1a223a 0%, #0e1324 100%);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .power-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--cyan);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .power-btn.running {
+            background: radial-gradient(circle, #0c2b2a 0%, #051616 100%);
+            border-color: var(--emerald);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
+        }
+
+        .power-btn.running:hover {
+            border-color: var(--coral);
+            box-shadow: 0 0 50px rgba(255, 107, 107, 0.5);
+        }
+
+        .power-icon {
+            font-size: 3.2rem;
+            margin-bottom: 0.25rem;
+            transition: transform 0.4s ease;
+        }
+
+        .power-btn:hover .power-icon {
+            transform: scale(1.15);
+        }
+
+        .power-btn-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .power-btn.running .power-btn-text {
+            color: var(--emerald);
+        }
+
+        .power-ring {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 212, 255, 0.25);
+            animation: spinRing 25s linear infinite;
+        }
+
+        .power-btn.running~.power-ring {
+            border-color: rgba(0, 255, 136, 0.45);
+            animation: spinRing 10s linear infinite;
+        }
+
+        @keyframes spinRing {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .power-status-desc h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .power-status-desc p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 420px;
+            line-height: 1.6;
+        }
+
+        /* Telemetry & Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .metric-box {
+            background: rgba(10, 14, 28, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--cyan);
+        }
+
+        /* Gesture Cheatsheet Section */
+        .gestures-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .gestures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gesture-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gesture-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-main);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .gesture-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .gesture-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gesture-id {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+        }
+
+        .gesture-icon {
+            font-size: 1.8rem;
+        }
+
+        .gesture-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .gesture-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .gesture-tag {
+            align-self: flex-start;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0.75rem;
+            border-radius: 50px;
+            background: rgba(0, 255, 136, 0.12);
+            color: var(--emerald);
+            margin-top: auto;
+        }
+
+        /* Console / Terminal Section */
+        .terminal-box {
+            background: #04060c;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            height: 260px;
+            overflow-y: auto;
+            color: #00ff88;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .terminal-box::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal-box::-webkit-scrollbar-track {
+            background: #04060c;
+        }
+
+        .terminal-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .log-entry {
+            margin-bottom: 0.4rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding-bottom: 0.2rem;
+        }
+
+        .log-time {
+            color: #64748b;
+        }
+
+        .log-level-info {
+            color: #38bdf8;
+        }
+
+        .log-level-success {
+            color: #4ade80;
+        }
+
+        .log-level-warning {
+            color: #fbbf24;
+        }
+
+        .log-level-error {
+            color: #f87171;
+        }
+
+        /* Settings Sliders */
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .slider-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .slider-val {
+            font-family: 'Fira Code', monospace;
+            color: var(--cyan);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 6px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--cyan);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--cyan);
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-bg">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Navigation Header -->
+        <header class="navbar">
+            <div class="brand-section">
+                <div class="brand-logo">D</div>
+                <div class="brand-title">
+                    <h1>DACTYL-AI <span>V2.5 Architecture</span></h1>
+                    <span>Touchless Magic Cursor & Hologram UI</span>
+                </div>
+            </div>
+            <div id="statusPill" class="status-pill">
+                <div class="status-dot"></div>
+                <span id="statusText">SYSTEM STANDBY (INACTIVE)</span>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Grid -->
+        <div class="main-grid">
+            <!-- Left: Power Controller & Launcher -->
+            <div class="card power-controller">
+                <div class="card-header" style="width: 100%;">
+                    <h2>🚀 AI Engine Launcher</h2>
+                    <span class="card-badge">Real-time Win32 / OpenCV</span>
+                </div>
+
+                <div class="power-btn-wrapper">
+                    <div id="toggleBtn" class="power-btn">
+                        <div class="power-icon">⚡</div>
+                        <div class="power-btn-text" id="btnActionText">ACTIVATE</div>
+                    </div>
+                    <div class="power-ring"></div>
+                </div>
+
+                <div class="power-status-desc">
+                    <h3 id="engineStatusTitle">Magic Cursor Non-Aktif</h3>
+                    <p id="engineStatusDesc">Klik tombol di atas untuk meluncurkan webcam, memuat model SVM 126-dimensi,
+                        dan mengaktifkan kontrol kursor bimanual.</p>
+                </div>
+            </div>
+
+            <!-- Right: System Telemetry & Configuration -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>📊 Engine Telemetry & Tuner</h2>
+                    <span class="card-badge">Live Parameters</span>
+                </div>
+
+                <div class="metrics-grid" style="margin-bottom: 2rem;">
+                    <div class="metric-box">
+                        <span class="metric-label">AI Brain Model</span>
+                        <span class="metric-value" id="modelStatus" style="color: var(--emerald);">SVM RBF Active</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Confidence Threshold</span>
+                        <span class="metric-value">≥ 75.0%</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">EMA Smoothing Alpha</span>
+                        <span class="metric-value">0.25 (Ultra-Smooth)</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">HUD Opacity</span>
+                        <span class="metric-value">60% (Always on Top)</span>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-item">
+                        <div class="slider-label-row">
+                            <span>Cursor EMA Smoothing (Alpha)</span>
+                            <span class="slider-val" id="emaVal">0.25</span>
+                        </div>
+                        <input type="range" min="0.05" max="0.80" step="0.05" value="0.25" id="emaSlider">
+                    </div>
+                    <div class="slider-item">
+                        <div class="slider-label-row">
+                            <span>HUD Glass Opacity</span>
+                            <span class="slider-val" id="opacityVal">60%</span>
+                        </div>
+                        <input type="range" min="20" max="90" step="5" value="60" id="opacitySlider">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gesture Cheatsheet Section -->
+        <section class="gestures-section">
+            <div class="card-header" style="margin-bottom: 1.5rem;">
+                <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem;">✨ Magic Cursor Gesture Cheatsheet
+                    (Label 0 - 7)</h2>
+                <span class="card-badge" style="border-color: var(--emerald); color: var(--emerald);">Bimanual AI
+                    Logic</span>
+            </div>
+
+            <div class="gestures-grid">
+                <div class="gesture-card">
+                    <div class="gesture-header">
+                        <span class="gesture-id">LABEL 0</span>
+                        <span class="gesture-icon">🖱️</span>
+                    </div>
+                    <div class="gesture-title">Move Cursor Navigation</div>
+                    <div class="gesture-desc">Arahkan jari telunjuk kanan lurus ke depan untuk memindahkan kursor secara
+                        presisi dengan EMA Jitter Filter.</div>
+                    <div class="gesture-tag">Right Hand • Index Tip</div>
+                </div>
+
+                <div class="gesture-card">
+                    <div class="gesture-header">
+                        <span class="gesture-id">LABEL 1</span>
+                        <span class="gesture-icon">🤏</span>
+                    </div>
+                    <div class="gesture-title">Click, Double Click & Drag</div>
+                    <div class="gesture-desc">Cubit jempol & telunjuk (< 0.28s) untuk Klik Kiri / Double Click. Tahan
+                            cubitan (> 0.28s) untuk Hold-Drag window/file.</div>
+                    <div class="gesture-tag">Right Hand • Pinch Logic</div>
+                </div>
+
+                <div class="gesture-card">
+                    <div class="gesture-header">
+                        <span class="gesture-id">LABEL 2</span>
+                        <span class="gesture-icon">🔊</span>
+                    </div>
+                    <div class="gesture-title">Multimedia Rotary Controller</div>
+                    <div class="gesture-desc">Rotasi pergelangan tangan kanan untuk mengatur Volume PC, dan rotasi
+                        tangan kiri untuk mengatur Kecerahan Layar.</div>
+                    <div class="gesture-tag">Dual Hand • Rotational Delta</div>
+                </div>
+
+                <div class="gesture-card">
+                    <div class="gesture-header">
+                        <span class="gesture-id">LABEL 3</span>
+                        <span class="gesture-icon">⌨️</span>
+                    </div>
+                    <div class="gesture-title">Hologram Ghost Keyboard</div>
+                    <div class="gesture-desc">Arahkan kedua tangan gestur Peace ✌️✌️ selama 2 detik untuk memunculkan
+                        keyboard hologram yang melayang di layar.</div>
+                    <div class="gesture-tag">Bimanual Trigger • Hover Type</div>
+                </div>
+
+                <div class="gesture-card">
+                    <div class="gesture-header">
+                        <span class="gesture-id">LABEL 4</span>
+                        <span class="gesture-icon">📸</span>
+                    </div>
+                    <div class="gesture-title">Futuristic Screenshot Area</div>
+                    <div class="gesture-desc">Bentuk bingkai segi empat menggunakan telunjuk & jempol kedua tangan.
+                        Tahan 1.5 detik untuk memotret area tersebut.</div>
+                    <div class="gesture-tag">Bimanual Framing • Viewfinder</div>
+                </div>
+
+                <div class="gesture-card">
+                    <div class="gesture-header">
+                        <span class="gesture-id">LABEL 5</span>
+                        <span class="gesture-icon">🧭</span>
+                    </div>
+                    <div class="gesture-title">Ninja Scroll Navigation</div>
+                    <div class="gesture-desc">Acungkan 2 jari (telunjuk & tengah sejajar) dan gerakkan naik-turun atau
+                        kanan-kiri untuk smooth scrolling dokumen/web.</div>
+                    <div class="gesture-tag">Right Hand • Ninja Mode</div>
+                </div>
+
+                <div class="gesture-card">
+                    <div class="gesture-header">
+                        <span class="gesture-id">LABEL 6</span>
+                        <span class="gesture-icon">↔️</span>
+                    </div>
+                    <div class="gesture-title">Horizontal Swipe / Tab</div>
+                    <div class="gesture-desc">Buka telapak tangan kiri seperti kertas ✋ dan geser horizontal untuk
+                        melakukan navigasi geser/hscroll tanpa memindahkan mouse.</div>
+                    <div class="gesture-tag">Left Hand • Palm MCP</div>
+                </div>
+
+                <div class="gesture-card" style="border-color: rgba(255, 107, 107, 0.4);">
+                    <div class="gesture-header">
+                        <span class="gesture-id" style="color: var(--coral);">LABEL 7</span>
+                        <span class="gesture-icon">🔒</span>
+                    </div>
+                    <div class="gesture-title" style="color: var(--coral);">System Lock & Standby</div>
+                    <div class="gesture-desc">Genggam tangan (Fist ✊) selama 1.0 detik untuk mengunci atau membuka kunci
+                        seluruh aksi kursor demi keamanan instant.</div>
+                    <div class="gesture-tag" style="background: rgba(255, 107, 107, 0.12); color: var(--coral);">Safety
+                        Lock • Fist Gesture</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Terminal Console -->
+        <div class="card">
+            <div class="card-header">
+                <h2>💻 System Telemetry & Event Console</h2>
+                <span class="card-badge">Live Stream</span>
+            </div>
+            <div class="terminal-box" id="consoleBox">
+                <div class="log-entry"><span class="log-time">[00:00:00]</span> <span
+                        class="log-level-info">[SYSTEM]</span> Dactyl-AI Executive Web Dashboard V2.5 siap.
+                    Menghubungkan ke server backend...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleBtn');
+        const statusPill = document.getElementById('statusPill');
+        const statusText = document.getElementById('statusText');
+        const btnActionText = document.getElementById('btnActionText');
+        const engineStatusTitle = document.getElementById('engineStatusTitle');
+        const engineStatusDesc = document.getElementById('engineStatusDesc');
+        const consoleBox = document.getElementById('consoleBox');
+        const modelStatus = document.getElementById('modelStatus');
+
+        // Sliders
+        const emaSlider = document.getElementById('emaSlider');
+        const emaVal = document.getElementById('emaVal');
+        const opacitySlider = document.getElementById('opacitySlider');
+        const opacityVal = document.getElementById('opacityVal');
+
+        emaSlider.addEventListener('input', (e) => {
+            emaVal.innerText = parseFloat(e.target.value).toFixed(2);
+            updateSettings();
+        });
+
+        opacitySlider.addEventListener('input', (e) => {
+            opacityVal.innerText = `${e.target.value}%`;
+            updateSettings();
+        });
+
+        let isAppRunning = false;
+
+        function addConsoleLog(text, level = "INFO") {
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            const timeStr = new Date().toTimeString().split(' ')[0];
+            let levelClass = 'log-level-info';
+            if (level === 'SUCCESS') levelClass = 'log-level-success';
+            if (level === 'WARNING') levelClass = 'log-level-warning';
+            if (level === 'ERROR') levelClass = 'log-level-error';
+
+            div.innerHTML = `<span class="log-time">[${timeStr}]</span> <span class="${levelClass}">[${level}]</span> ${text}`;
+            consoleBox.appendChild(div);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        async function pollStatus() {
+            try {
+                const res = await fetch('/api/status');
+                if (res.ok) {
+                    const data = await res.json();
+                    updateUIState(data.is_running, data.model_available);
+                    if (data.logs && data.logs.length > 0) {
+                        consoleBox.innerHTML = '';
+                        data.logs.forEach(l => {
+                            const div = document.createElement('div');
+                            div.className = 'log-entry';
+                            div.innerText = l;
+                            consoleBox.appendChild(div);
+                        });
+                        consoleBox.scrollTop = consoleBox.scrollHeight;
+                    }
+                }
+            } catch (err) {
+                // Backend server not reachable
+            }
+        }
+
+        function updateUIState(running, modelAvail) {
+            isAppRunning = running;
+            if (modelAvail) {
+                modelStatus.innerText = "SVM RBF Active (Ready)";
+                modelStatus.style.color = "var(--emerald)";
+            } else {
+                modelStatus.innerText = "Model Missing (Train First)";
+                modelStatus.style.color = "var(--coral)";
+            }
+
+            if (running) {
+                toggleBtn.classList.add('running');
+                btnActionText.innerText = "SHUT DOWN";
+                statusPill.classList.add('active');
+                statusText.innerText = "SYSTEM ACTIVE & TRACKING";
+                engineStatusTitle.innerText = "Magic Cursor Sedang Berjalan";
+                engineStatusTitle.style.color = "var(--emerald)";
+                engineStatusDesc.innerText = "Kamera web aktif memindai 21 koordinat sendi tangan pada 30 FPS. Tekan 'q' pada window kamera atau tombol di bawah untuk mematikan.";
+            } else {
+                toggleBtn.classList.remove('running');
+                btnActionText.innerText = "ACTIVATE";
+                statusPill.classList.remove('active');
+                statusText.innerText = "SYSTEM STANDBY (INACTIVE)";
+                engineStatusTitle.innerText = "Magic Cursor Non-Aktif";
+                engineStatusTitle.style.color = "var(--text-main)";
+                engineStatusDesc.innerText = "Klik tombol di atas untuk meluncurkan webcam, memuat model SVM 126-dimensi, dan mengaktifkan kontrol kursor bimanual.";
+            }
+        }
+
+        toggleBtn.addEventListener('click', async () => {
+            addConsoleLog(isAppRunning ? "Mengirim perintah shutdown..." : "Meluncurkan Dactyl-AI Magic Cursor...", "INFO");
+            try {
+                const res = await fetch('/api/toggle', { method: 'POST' });
+                const data = await res.json();
+                updateUIState(data.is_running, true);
+                addConsoleLog(data.is_running ? "Dactyl-AI Berhasil Diaktifkan!" : "Dactyl-AI Dimatikan.", data.is_running ? "SUCCESS" : "INFO");
+            } catch (e) {
+                addConsoleLog("Gagal menghubungi launcher server. Pastikan dactyl_launcher_server.py sedang dijalankan.", "ERROR");
+            }
+        });
+
+        async function updateSettings() {
+            const settings = {
+                ema_alpha: parseFloat(emaSlider.value),
+                opacity: parseInt(opacitySlider.value)
+            };
+            try {
+                await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(settings)
+                });
+            } catch (e) { }
+        }
+
+        // Poll status every 1.5s
+        setInterval(pollStatus, 1500);
+        pollStatus();
+    </script>
+</body>
+
+</html>
